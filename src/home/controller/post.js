@@ -160,14 +160,18 @@ export default class extends Base {
   async archiveAction() {
     let model = this.model('post');
     let data = await model.getPostArchive();
+    let allPost = await model.getPostList();
     for(let i in data) { data[i].map(post => post.pathname = encodeURIComponent(post.pathname)) }
     this.assign('list', data);
+    allPost.data.map(post=>post.createTimeShow = think.datetime(post.create_time, 'YYYY年MM月DD日'));
+    this.assign('allPost', allPost);
     return this.displayView('archive');
   }
 
   async tagAction() {
     return this.displayView('tag');
   }
+
   /**
    * search action
    * @return {[type]} [description]

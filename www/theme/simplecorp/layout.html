@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" href="{{options.favicon_url |default('/static/img/firekylin.jpg')}}"> {% if options.favicon %}
+    <link rel="shortcut icon" href="{{options.favicon}}" type="image/x-icon">{% endif %}
+    <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/rss.html">
+    <link rel=search type="application/opensearchdescription+xml" href="/opensearch.xml" title="{{ options.title }}">
+    <link rel="stylesheet" href="/theme/simplecorp/res/css/style.css" type="text/css" data-ls="css_firekylin"> {% if options.keywords %}
+    <meta name="keywords" content="{{options.keywords}}">{% endif %} {% if options.description %}
+    <meta name="description" content="{{options.description}}">{% endif %}
+</head>
+
+<body>
+    <div id="page">
+        <div id="page-top" class="container clearfix">
+            <div id="pre-header">
+                <div id="social-icons">
+                    <ul id="social-links">
+                        <li class="facebook-link">
+                            <a id="social-01" href="https://www.facebook.com/byvoid" target="_blank" original-title="Find me on Facebook" class="facebook"></a>
+                        </li>
+                        <li class="twitter-link">
+                            <a id="social-02" href="https://twitter.com/byvoid" target="_blank" original-title="Find me on Twitter" class="twitter"></a>
+                        </li>
+                        <li class="linkedin-link">
+                            <a id="social-04" href="https://www.linkedin.com/in/byvoid" target="_blank" original-title="My LinkedIn" class="linkedin"></a>
+                        </li>
+                        <li class="github-link">
+                            <a id="social-05" href="https://github.com/BYVoid" target="_blank" original-title="My projects on Github" class="github"></a>
+                        </li>
+                        <li class="google-link">
+                            <a id="social-06" href="https://plus.google.com/+CarboKuo" target="_blank" original-title="Find me on Google +" class="google"></a>
+                        </li>
+                        <li class="weibo-link">
+                            <a id="social-07" href="http://weibo.com/byvoid" target="_blank" original-title="新浪微博" class="weibo"></a>
+                        </li>
+                        <li class="rss-link">
+                            <a id="social-09" href="/zhs/feed" target="_blank" original-title="RSS feed" class="rss"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <header id="header" role="banner" class="clearfix">
+                <hgroup id="logo-wrapper">
+                    <h1>
+                        <a id="logo" href="/"></a>
+                    </h1>
+                </hgroup>
+                <div id="navigation-wrapper" class="clearfix">
+                    <nav id="main-navigation" class="main-menu">
+                        <ul id="menu-top-menu" class="sf-menu">
+                            <li class="menu-item current">
+                                <a href="/">网志</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="/archives">列表</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="/zhs/blog/tag">标签</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="/zhs/project">项目</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="/about" style="padding-right: 23px;">关于
+                                    <span class="downarrowclass"></span>
+                                </a>
+                                <ul class="sub-menu" style="top: 127px; visibility: visible; left: 0px; width: 175px; display: none;">
+                                    <li class="menu-item">
+                                        <a href="/zhs/about/resume">Resume</a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a href="/zhs/about/logo">Logo</a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a href="/zhs/slides/">Slides</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item">
+                                <a href="/zhs/contact">联系</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+        </div>
+        <div id="content" class="container clearfix">
+            <div id="banner-image" class="container clearfix">
+                <div id="banner-image-1"></div>
+            </div>
+            <section id="content-main">
+                    {% block content %}
+                  
+                    {% endblock %}
+            </section>
+            <aside id="content-side">
+                <div class="sidebarBox widget_search">
+                    <form id="searchform" role="search" method="get" action="https://www.google.com/cse" target="_blank">
+                        <label for="s" class="screen-reader-text">Search for:</label>
+                        <input id="s" type="text" value="" name="q" placeholder="Search this site...">
+                        <input type="hidden" name="cx" value="partner-pub-7100557222552278:h6n6am-u2fu">
+                        <input type="hidden" name="ie" value="UTF-8">
+                        <input name="siteurl" type="hidden" value="www.byvoid.com">
+                        <input id="searchsubmit" type="submit" value="Search">
+                    </form>
+                </div>
+                <div class="sidebarBox">
+                    <h4>语言</h4>
+                    <ul>
+                        <li>
+                            <a href="/zht/blog" id="langLink_zht">正體中文</a>
+                        </li>
+                        <li>
+                            <a href="/zhs/blog" id="langLink_zhs">簡體中文</a>
+                        </li>
+                        <li>
+                            <a href="/en/blog" id="langLink_en">English</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sidebarBox">
+                    <h4>分类</h4>
+                    <ul>
+                        <li>
+                            <a href="/zhs/blog/tag/中文與漢語">中文與漢語</a>
+                        </li>
+                        <li>
+                            <a href="/zhs/blog/tag/生活點滴">生活點滴</a>
+                        </li>
+                        <li>
+                            <a href="/zhs/blog/tag/稷下學宮">稷下學宮</a>
+                        </li>
+                        <li>
+                            <a href="/zhs/blog/tag/精華轉載">精華轉載</a>
+                        </li>
+                        <li>
+                            <a href="/zhs/blog/tag/自娛自樂">自娛自樂</a>
+                        </li>
+                        <li>
+                            <a href="/zhs/blog/tag/設計開發">設計開發</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sidebarBox">
+                    <h4>最热门</h4>
+                    <ul>
+                        <li>
+                            <a href="/zhs/blog/cpp-string">C++ string 用法详解</a> - 236889</li>
+                        <li>
+                            <a href="/zhs/blog/recommend-rime">推荐一个神级输入法——Rime</a> - 234998</li>
+                        <li>
+                            <a href="/zhs/blog/scc-tarjan">有向图强连通分量的Tarjan算法</a> - 217135</li>
+                        <li>
+                            <a href="/zhs/blog/why-the-usa-is-so-boring-1">为什么美国这么无聊（一）</a> - 178086</li>
+                        <li>
+                            <a href="/zhs/blog/bh-diao-cao">避讳借字——「屌」、「肏」、「屄」</a> - 169515</li>
+                    </ul>
+                </div>
+                <div class="sidebarBox">
+                    <h4>存档</h4>
+                    <ul>
+                        <li>
+                            <a href="/zhs/blog/archive/2017/10">2017年十月</a> (1)</li>
+                        <li>
+                            <a href="/zhs/blog/archive/2017/8">2017年八月</a> (1)</li>
+                        <li>
+                            <a href="/zhs/blog/archive/2017/6">2017年六月</a> (1)</li>
+                        <li>
+                            <a href="/zhs/blog/archive/2017/5">2017年五月</a> (2)</li>
+                        <li>
+                            <a href="/zhs/blog/archive/2017/3">2017年三月</a> (2)</li>
+                        <li>
+                            <a href="/zhs/blog/archive/2017/2">2017年二月</a> (3)</li>
+                        <li>
+                            <a href="/zhs/blog/archive/2016/12">2016年十二月</a> (1)</li>
+                        <li>
+                            <a href="/zhs/blog/archive/2016/10">2016年十月</a> (1)</li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+        <footer id="footer">
+            <div class="container clearfix">
+                <div class="first one-fourth widget-container">
+                    <h1>Blogroll</h1>
+                    <ul>
+                        <li>
+                            <a href="http://maskray.me/" target="_blank">MaskRay</a>
+                        </li>
+                        <li>
+                            <a href="http://ppwwyyxx.com/" target="_blank">Yuxin's Blog</a>
+                        </li>
+                        <li>
+                            <a href="https://blog.blahgeek.com/" target="_blank">BlahGeek</a>
+                        </li>
+                        <li>
+                            <a href="http://yangzhe1990.wordpress.com/" target="_blank">Yangzhe1990's Blog</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="one-fourth widget-container">
+                    <h1>Blogroll</h1>
+                    <ul>
+                        <li>
+                            <a href="http://dangfan.me/" target="_blank">Dang Fan's Blog</a>
+                        </li>
+                        <li>
+                            <a href="http://www.curimit.com/blog/" target="_blank">Swj's Home</a>
+                        </li>
+                        <li>
+                            <a href="http://www.csslayer.info/" target="_blank">CS Slayer</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="one-fourth widget-container">
+                    <h1>Blogroll</h1>
+                    <ul>
+                        <li>
+                            <a href="http://typeof.net/" target="_blank">Typeof.net</a>
+                        </li>
+                        <li>
+                            <a href="http://blog.henryhu.net/" target="_blank">Henry's Blog</a>
+                        </li>
+                        <li>
+                            <a href="http://blog.sina.com.cn/ychromosome" target="_blank">polyhedron(古韻)</a>
+                        </li>
+                        <li>
+                            <a href="http://zhiqiang.org/blog/" target="_blank">閱微堂</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="last one-fourth widget-container">
+                    <h1>Blogroll</h1>
+                    <ul>
+                        <li>
+                            <a href="http://www.liyaos.com/" target="_blank">優哉幽齋</a>
+                        </li>
+                        <li>
+                            <a href="http://www.vuryleo.com/" target="_blank">超越時空</a>
+                        </li>
+                        <li>
+                            <a href="http://solog.me/" target="_blank">獨異誌</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="copyrights">
+                <div class="container clearfix">
+                    <span class="right">
+                        <a href="#" class="backtotop">↑</a>
+                    </span>Originally designed by Site5 WordPress Themes. BYVoid refactored with Node.js, less, jade and CoffeeScript.</div>
+            </div>
+        </footer>
+    </div>
+    <script src='/theme/simplecorp/res/js/plugins/jquery-1.8.2.js'></script>
+    <script src='/theme/simplecorp/res/js/plugins/modernizr-2.6.2.js'></script>
+    <script src='/theme/simplecorp/res/js/plugins/yepnope.js'></script>
+    <script src='/theme/simplecorp/res/js/plugins/behaviours.js'></script>
+    <script src='/theme/simplecorp/res/js/plugins/jquery.prettyPhoto.js'></script>
+</body>
+</html>

@@ -2325,10 +2325,10 @@ ul#social-links li.weibo-link:hover {
 
 #logo {
     display: block;
-    width: 250px;
-    height: 30px;
+    width: 350px;
+    height: 40px;
     background: url(../images/logo.png) top left no-repeat;
-    background-size: 250px 30px
+    background-size: 350px 40px
 }
 
 #banner-image-0,

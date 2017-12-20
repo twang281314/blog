@@ -1,6 +1,7 @@
 {
     "name": "simplecorp",
     "version": "0.1.0",
+    "description": "A simple theme designed for a developer's personal blog.",
     "configElements": [
       {
         "type": "text",

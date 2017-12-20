@@ -1,0 +1,23 @@
+{% extends './layout.html' %} {% block title -%}
+
+{{post.title}} - {{options.title}} {%- endblock %} 
+
+{% block content %}
+<h1>日志列表</h1>
+<div id="main" role="main" class="postlist">
+    <table>
+        <tbody>
+            {% for post in allPost.data %}
+            <tr>
+                <td>{{post.createTimeShow}}</td>
+                <td>
+                    <a href="/post/{{post.pathname}}.html" title={{post.title}} data-post-id="post.pathname">{{post.title}}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div id="pagination">
+        <a href="/zhs/blog/tag/%E4%B8%AD%E6%96%87%E8%88%87%E6%BC%A2%E8%AA%9E/page/2">Next Page</a>
+    </div>
+</div>
+{% endblock %}

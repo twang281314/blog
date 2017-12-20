@@ -1,0 +1,60 @@
+{% extends './layout.html' %} {% block content %}
+<div id="main" role="main" class="postlist">
+
+    {% for post in posts %}
+    <article data-post-id="blog/why-the-usa-is-so-boring-1" class="post hentry clearfix">
+        <aside class="entry-meta">
+            <time datetime="2017-10-07T02:24:04.279Z" class="post-date published">
+                <span class="post-month">十月</span>
+                <strong class="post-day">7</strong>
+                <span class="post-year">2017</span>
+            </time>
+            <ul>
+                <li>本文由
+                    <strong>
+                        <a href="http://opencc.byvoid.com/" target="_blank">OpenCC</a>
+                    </strong>转换</li>
+                <li>
+                    <span class="title">作者:
+                        <span class="author">
+                                {% set user = post.user %}
+                                {% if user.display_name %}{{user.display_name}}{% else %}{{user.name}}{% endif %}
+                        </span>
+                    </span>
+                </li>
+                <li>
+                    <ul>
+                        <li>
+                            <a href="/blog/tag/美國">美國</a>
+                        </li>
+                        <li>
+                            <a href="/blog/tag/文化衝擊">文化衝擊</a>
+                        </li>
+                        <li>
+                            <a href="/blog/tag/城市規劃">城市規劃</a>
+                        </li>
+                        <li>
+                            <a href="/blog/tag/公共交通">公共交通</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="title">阅读: 178086</span>
+                </li>
+            </ul>
+        </aside>
+        <section class="entry-body entry-body-content">
+            <header>
+                <h1>
+                    <a href="/post/{{post.pathname}}.html" data-post-id="/post/{{post.pathname}}.html" class="post_header_link entry-title">{{post.title}}</a>
+                </h1>
+            </header>
+            {{post.content| safe}}
+        </section>
+    </article>
+    {% endfor %}
+    <div id="pagination">
+        <a href="/zhs/blog/page/2">Next Page</a>
+    </div>
+</div>
+{% endblock %}
