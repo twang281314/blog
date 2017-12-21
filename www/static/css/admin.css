@@ -15,7 +15,7 @@
 .fk-alert{position: fixed;top: 0;z-index: 1000}
 .table tbody form tr td,
 .table tfoot form tr td{padding: 8px;border-top: 1px solid #ddd;line-height: 1.42857143;}
-html,body{height:100%;/*overflow: hidden;*/background:#eff0f4;}
+html,body{height:100%;/*overflow: hidden;*/background:#eff0f4;background-image: url(/theme/simplecorp/res/images/main-bg4.jpg);}
 a:hover,a:focus{text-decoration:none;cursor:pointer;}
 ul,ol{padding:0;list-style:none;}
 .middle{line-height:32px;}
