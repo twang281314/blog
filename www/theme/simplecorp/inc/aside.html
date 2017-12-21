@@ -1,0 +1,61 @@
+<aside id="content-side">
+        <div class="sidebarBox widget_search">
+            <form id="searchform" role="search" method="get" action="https://www.google.com/cse" target="_blank">
+                <label for="s" class="screen-reader-text">Search for:</label>
+                <input id="s" type="text" value="" name="q" placeholder="Search this site...">
+                <input type="hidden" name="cx" value="partner-pub-7100557222552278:h6n6am-u2fu">
+                <input type="hidden" name="ie" value="UTF-8">
+                <input name="siteurl" type="hidden" value="www.byvoid.com">
+                <input id="searchsubmit" type="submit" value="Search">
+            </form>
+        </div>
+        <div class="sidebarBox">
+            <h4>语言</h4>
+            <ul>
+                <li>
+                    <a href="/zht/blog" id="langLink_zht">正體中文</a>
+                </li>
+                <li>
+                    <a href="/zhs/blog" id="langLink_zhs">簡體中文</a>
+                </li>
+                <li>
+                    <a href="/en/blog" id="langLink_en">English</a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebarBox">
+            <h4>分类</h4>
+            <ul>
+                {% for category in categories %}
+                <li>
+                    <a href="/cate/{{category.pathname}}">{{category.name}}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="sidebarBox">
+            <h4>最热门</h4>
+            <ul>
+                <li>
+                    <a href="/zhs/blog/cpp-string">C++ string 用法详解</a> - 236889</li>
+                <li>
+                    <a href="/zhs/blog/recommend-rime">推荐一个神级输入法——Rime</a> - 234998</li>
+                <li>
+                    <a href="/zhs/blog/scc-tarjan">有向图强连通分量的Tarjan算法</a> - 217135</li>
+                <li>
+                    <a href="/zhs/blog/why-the-usa-is-so-boring-1">为什么美国这么无聊（一）</a> - 178086</li>
+                <li>
+                    <a href="/zhs/blog/bh-diao-cao">避讳借字——「屌」、「肏」、「屄」</a> - 169515</li>
+            </ul>
+        </div>
+        <div class="sidebarBox">
+            <h4>存档</h4>
+            <ul>
+                    {% for cate in postArchive %}
+                    <li>
+                            <a href="/archive/{{cate.pathname}}">{{cate.name}}</a>({{cate.count}})
+                    </li>
+                    {% endfor %}
+            </ul>
+        </div>
+    </aside>

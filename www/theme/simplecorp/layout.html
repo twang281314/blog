@@ -44,50 +44,7 @@
                     </ul>
                 </div>
             </div>
-            <header id="header" role="banner" class="clearfix">
-                <hgroup id="logo-wrapper">
-                    <h1>
-                        <a id="logo" href="/"></a>
-                    </h1>
-                </hgroup>
-                <div id="navigation-wrapper" class="clearfix">
-                    <nav id="main-navigation" class="main-menu">
-                        <ul id="menu-top-menu" class="sf-menu">
-                            <li class="menu-item current">
-                                <a href="/post">网志</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="/archives">列表</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="/zhs/blog/tag">标签</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="/zhs/project">项目</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="/about" style="padding-right: 23px;">关于
-                                    <span class="downarrowclass"></span>
-                                </a>
-                                <ul class="sub-menu" style="top: 127px; visibility: visible; left: 0px; width: 175px; display: none;">
-                                    <li class="menu-item">
-                                        <a href="/zhs/about/resume">Resume</a>
-                                    </li>
-                                    <li class="menu-item">
-                                        <a href="/zhs/about/logo">Logo</a>
-                                    </li>
-                                    <li class="menu-item">
-                                        <a href="/zhs/slides/">Slides</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="menu-item">
-                                <a href="/zhs/contact">联系</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </header>
+            {% include "./inc/header.html" %}
         </div>
         <div id="content" class="container clearfix">
             <div id="banner-image" class="container clearfix">
@@ -96,146 +53,20 @@
             <section id="content-main">
                 {% block content %} {% endblock %}
             </section>
-            <aside id="content-side">
-                <div class="sidebarBox widget_search">
-                    <form id="searchform" role="search" method="get" action="https://www.google.com/cse" target="_blank">
-                        <label for="s" class="screen-reader-text">Search for:</label>
-                        <input id="s" type="text" value="" name="q" placeholder="Search this site...">
-                        <input type="hidden" name="cx" value="partner-pub-7100557222552278:h6n6am-u2fu">
-                        <input type="hidden" name="ie" value="UTF-8">
-                        <input name="siteurl" type="hidden" value="www.byvoid.com">
-                        <input id="searchsubmit" type="submit" value="Search">
-                    </form>
-                </div>
-                <div class="sidebarBox">
-                    <h4>语言</h4>
-                    <ul>
-                        <li>
-                            <a href="/zht/blog" id="langLink_zht">正體中文</a>
-                        </li>
-                        <li>
-                            <a href="/zhs/blog" id="langLink_zhs">簡體中文</a>
-                        </li>
-                        <li>
-                            <a href="/en/blog" id="langLink_en">English</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="sidebarBox">
-                    <h4>分类</h4>
-                    <ul>
-                        {% for category in categories %}
-                        <li>
-                            <a href="/cate/{{category.pathname}}">{{category.name}}</a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div class="sidebarBox">
-                    <h4>最热门</h4>
-                    <ul>
-                        <li>
-                            <a href="/zhs/blog/cpp-string">C++ string 用法详解</a> - 236889</li>
-                        <li>
-                            <a href="/zhs/blog/recommend-rime">推荐一个神级输入法——Rime</a> - 234998</li>
-                        <li>
-                            <a href="/zhs/blog/scc-tarjan">有向图强连通分量的Tarjan算法</a> - 217135</li>
-                        <li>
-                            <a href="/zhs/blog/why-the-usa-is-so-boring-1">为什么美国这么无聊（一）</a> - 178086</li>
-                        <li>
-                            <a href="/zhs/blog/bh-diao-cao">避讳借字——「屌」、「肏」、「屄」</a> - 169515</li>
-                    </ul>
-                </div>
-                <div class="sidebarBox">
-                    <h4>存档</h4>
-                    <ul>
-                            {% for cate in postArchive %}
-                            <li>
-                                    <a href="/archive/{{cate.pathname}}">{{cate.name}}</a>({{cate.count}})
-                            </li>
-                            {% endfor %}
-                    </ul>
-                </div>
-            </aside>
+            {% include "./inc/aside.html" %}
         </div>
-        <footer id="footer">
-            <div class="container clearfix">
-                <div class="first one-fourth widget-container">
-                    <h1>Blogroll</h1>
-                    <ul>
-                        <li>
-                            <a href="http://maskray.me/" target="_blank">MaskRay</a>
-                        </li>
-                        <li>
-                            <a href="http://ppwwyyxx.com/" target="_blank">Yuxin's Blog</a>
-                        </li>
-                        <li>
-                            <a href="https://blog.blahgeek.com/" target="_blank">BlahGeek</a>
-                        </li>
-                        <li>
-                            <a href="http://yangzhe1990.wordpress.com/" target="_blank">Yangzhe1990's Blog</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="one-fourth widget-container">
-                    <h1>Blogroll</h1>
-                    <ul>
-                        <li>
-                            <a href="http://dangfan.me/" target="_blank">Dang Fan's Blog</a>
-                        </li>
-                        <li>
-                            <a href="http://www.curimit.com/blog/" target="_blank">Swj's Home</a>
-                        </li>
-                        <li>
-                            <a href="http://www.csslayer.info/" target="_blank">CS Slayer</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="one-fourth widget-container">
-                    <h1>Blogroll</h1>
-                    <ul>
-                        <li>
-                            <a href="http://typeof.net/" target="_blank">Typeof.net</a>
-                        </li>
-                        <li>
-                            <a href="http://blog.henryhu.net/" target="_blank">Henry's Blog</a>
-                        </li>
-                        <li>
-                            <a href="http://blog.sina.com.cn/ychromosome" target="_blank">polyhedron(古韻)</a>
-                        </li>
-                        <li>
-                            <a href="http://zhiqiang.org/blog/" target="_blank">閱微堂</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="last one-fourth widget-container">
-                    <h1>Blogroll</h1>
-                    <ul>
-                        <li>
-                            <a href="http://www.liyaos.com/" target="_blank">優哉幽齋</a>
-                        </li>
-                        <li>
-                            <a href="http://www.vuryleo.com/" target="_blank">超越時空</a>
-                        </li>
-                        <li>
-                            <a href="http://solog.me/" target="_blank">獨異誌</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div id="copyrights">
-                <div class="container clearfix">
-                    <span class="right">
-                        <a href="#" class="backtotop">↑</a>
-                    </span>Originally designed by Site5 WordPress Themes. BYVoid refactored with Node.js, less, jade and CoffeeScript.</div>
-            </div>
-        </footer>
+        {% include "./inc/footer.html" %}
     </div>
     <script src='/theme/simplecorp/res/js/plugins/jquery-1.8.2.js'></script>
     <script src='/theme/simplecorp/res/js/plugins/modernizr-2.6.2.js'></script>
     <script src='/theme/simplecorp/res/js/plugins/yepnope.js'></script>
     <script src='/theme/simplecorp/res/js/plugins/behaviours.js'></script>
     <script src='/theme/simplecorp/res/js/plugins/jquery.prettyPhoto.js'></script>
+    <script src='/theme/simplecorp/res/js/plugins/tagcanvas.min.js'></script>
+
+{% block page_self_script %}
+
+{% endblock %}
 </body>
 
 </html>

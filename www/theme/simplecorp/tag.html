@@ -1,0 +1,57 @@
+{% extends './layout.html' %} {% block title -%} {{post.title}} - {{options.title}} {%- endblock %} {% block content %}
+<h1>标签列表</h1>
+<div id="main" role="main" class="postlist">
+    <div id="tagCanvasContainer">
+        <canvas height="500" id="tagCanvas">
+            <p>In Internet Explorer versions up to 8, things inside the canvas are inaccessible!</p>
+        </canvas>
+    </div>
+    <div id="tags">
+        <ul>
+            <li>
+                {% for tag in tags %}
+                <a href="/tag/{{tag.pathname}}" data-tag="{{tag.name}}">{{tag.name}}({{tag.count}})</a>
+                {% endfor %}
+            </li>
+            <li>
+                <a href="http://www.google.com" target="_blank">Google</a>
+            </li>
+            <li>
+                <a href="http://www.github.com" target="_blank">Github</a>
+            </li>
+        </ul>
+    </div>
+    <table>
+        <tbody>
+            {% for post in allPost.data %}
+            <tr>
+                <td>{{post.createTimeShow}}</td>
+                <td>
+                    <a href="/post/{{post.pathname}}.html" title={{post.title}} data-post-id="post.pathname">{{post.title}}</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% include "./inc/pagination.html" %}
+</div>
+{% endblock %} {% block page_self_script %}
+
+<script type="text/javascript">
+    window.onload = function () {
+        jQuery('#tagCanvas')[0].width = 700;
+        try {
+            TagCanvas.Start('tagCanvas', 'tags', {
+                textColour: '#898989',
+                outlineColour: '#ff00ff',
+                reverse: true,
+                depth: 0.8,
+                maxSpeed: 0.05
+            });
+        } catch (e) {
+            // something went wrong, hide the canvas container
+            document.getElementById('tagCanvasContainer').style.display = 'none';
+        }
+    };
+</script>
+{% endblock %}
