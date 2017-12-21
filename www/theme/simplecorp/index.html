@@ -24,9 +24,7 @@
                 </li>
                 <li>
                     <ul>
-                        <li>
-                            <a href="/blog/tag/美國">美國</a>
-                        </li>
+                      
                         <li>
                             <a href="/blog/tag/文化衝擊">文化衝擊</a>
                         </li>
@@ -53,8 +51,6 @@
         </section>
     </article>
     {% endfor %}
-    <div id="pagination">
-        <a href="/zhs/blog/page/2">Next Page</a>
-    </div>
+    {% include "./inc/pagination.html" %}
 </div>
 {% endblock %}

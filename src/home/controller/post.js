@@ -25,23 +25,30 @@ export default class extends Base {
       tag: this.get('tag'),
       cate: this.get('cate')
     };
-    if(this.get('name')) {
-      let user = await this.model('user').where({name: this.get('name')}).find();
-      if(!think.isEmpty(user)) {
-        where.where = {user_id: user.id};
+    if (this.get('name')) {
+      let user = await this.model('user').where({
+        name: this.get('name')
+      }).find();
+      if (!think.isEmpty(user)) {
+        where.where = {
+          user_id: user.id
+        };
       }
     }
 
-    let tagName = '', cateName = '';
-    if(where.tag) {
-      tagName = await this.model('tag').where({pathname: where.tag}).find();
-      if(!think.isEmpty(tagName)) {
+    let tagName = '',
+      cateName = '';
+    if (where.tag) {
+      tagName = await this.model('tag').where({
+        pathname: where.tag
+      }).find();
+      if (!think.isEmpty(tagName)) {
         tagName = tagName.name;
       } else {
         return think.statusAction(404, this.http);
       }
     }
-    if(where.cate) {
+    if (where.cate) {
       [cateName] = this.assign('categories').filter(cate =>
         cate.pathname.toLowerCase() === where.cate.toLowerCase()
       );
@@ -63,7 +70,10 @@ export default class extends Base {
         post.featuredImage = '';
       }
     });
-    let {data, ...pagination} = list;
+    let {
+      data,
+      ...pagination
+    } = list;
     this.assign({
       posts: data,
       pagination,
@@ -80,9 +90,11 @@ export default class extends Base {
   async detailAction() {
     this.http.url = decodeURIComponent(this.http.url);
     let pathname = this.get('pathname');
-    if(pathname === 'list') { return this.listAction(); }
+    if (pathname === 'list') {
+      return this.listAction();
+    }
     let detail;
-    if(this.get('preview')) {
+    if (this.get('preview')) {
       try {
         let previewData = JSON.parse(this.post('previewData'));
         detail = await think.model('post', null, 'admin').getContentAndSummary(previewData);
@@ -92,7 +104,7 @@ export default class extends Base {
     }
 
     detail = detail || await this.model('post').getPostDetail(pathname);
-    if(think.isEmpty(detail)) {
+    if (think.isEmpty(detail)) {
       return this.redirect('/');
     }
     detail.pathname = encodeURIComponent(detail.pathname);
@@ -111,7 +123,7 @@ export default class extends Base {
   async pageAction() {
     let pathname = this.get('pathname');
     let detail;
-    if(this.get('preview')) {
+    if (this.get('preview')) {
       try {
         let previewData = JSON.parse(this.post('previewData'));
         detail = await think.model('post', null, 'admin').getContentAndSummary(previewData);
@@ -140,14 +152,15 @@ export default class extends Base {
     this.assign('pathname', pathname);
 
     let template = 'page';
-    if(detail.options) {
+    if (detail.options) {
       try {
-        if(detail.options.template) {
-          /*let stat = */await stats(path.join(this.THEME_VIEW_PATH, 'template', detail.options.template));
-          template = `template${think.sep}`+detail.options.template.slice(0, -5);
+        if (detail.options.template) {
+          /*let stat = */
+          await stats(path.join(this.THEME_VIEW_PATH, 'template', detail.options.template));
+          template = `template${think.sep}` + detail.options.template.slice(0, -5);
         }
-      } catch(e) {
-        console.log(e);  // eslint-disable-line no-console
+      } catch (e) {
+        console.log(e); // eslint-disable-line no-console
       }
     }
 
@@ -159,12 +172,28 @@ export default class extends Base {
    */
   async archiveAction() {
     let model = this.model('post');
+    let where = {
+      cate: this.get('cate'),
+      year: this.get('year'),
+      month: this.get('month')
+    };
+
     let data = await model.getPostArchive();
-    let allPost = await model.getPostList();
-    for(let i in data) { data[i].map(post => post.pathname = encodeURIComponent(post.pathname)) }
+    for (let i in data) {
+      data[i].map(post => post.pathname = encodeURIComponent(post.pathname))
+    }
     this.assign('list', data);
-    allPost.data.map(post=>post.createTimeShow = think.datetime(post.create_time, 'YYYY年MM月DD日'));
+
+    //分页查询
+    let allPost = await model.getPostList(this.get('page'), where);
+    allPost.data.map(post => post.createTimeShow = think.datetime(post.create_time, 'YYYY年MM月DD日'));
     this.assign('allPost', allPost);
+
+    let {
+      ...pagination
+    } = allPost;
+  
+    this.assign('pagination', pagination);
     return this.displayView('archive');
   }
 
@@ -178,7 +207,7 @@ export default class extends Base {
    */
   async searchAction() {
     let keyword = this.get('keyword').trim();
-    if(keyword) {
+    if (keyword) {
       let postModel = this.model('post');
       let searchResult = await postModel.getPostSearch(keyword, this.get('page'));
       this.assign('searchData', searchResult);

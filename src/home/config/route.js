@@ -12,10 +12,12 @@ export default [
 
   [/^about$/, 'post/page?pathname=about'],
   [/^archives$/, 'post/archive'],
-  [/^cate\/(.+)$/, 'post/list?cate=:1'],
+  [/^cate\/(.+)$/, 'post/archive?cate=:1'],
+  [/^archive\/(.+)\/(.+)$/, 'post/archive?year=:1&month=:2'],
   [/^tag\/(.+)$/, 'post/list?tag=:1'],
   [/^author\/([^/]+)$/, 'post/list?name=:1'],
   [/^tags$/, 'post/tag'],
+
   [/^links$/, 'post/page?pathname=links'],
   [/^rss(?:\.xml)?$/, 'index/rss'],
   [/^sitemap(?:\.xml)?$/, 'index/sitemap'],

@@ -54,7 +54,7 @@
                     <nav id="main-navigation" class="main-menu">
                         <ul id="menu-top-menu" class="sf-menu">
                             <li class="menu-item current">
-                                <a href="/">网志</a>
+                                <a href="/post">网志</a>
                             </li>
                             <li class="menu-item">
                                 <a href="/archives">列表</a>
@@ -94,9 +94,7 @@
                 <div id="banner-image-1"></div>
             </div>
             <section id="content-main">
-                    {% block content %}
-                  
-                    {% endblock %}
+                {% block content %} {% endblock %}
             </section>
             <aside id="content-side">
                 <div class="sidebarBox widget_search">
@@ -126,24 +124,11 @@
                 <div class="sidebarBox">
                     <h4>分类</h4>
                     <ul>
+                        {% for category in categories %}
                         <li>
-                            <a href="/zhs/blog/tag/中文與漢語">中文與漢語</a>
+                            <a href="/cate/{{category.pathname}}">{{category.name}}</a>
                         </li>
-                        <li>
-                            <a href="/zhs/blog/tag/生活點滴">生活點滴</a>
-                        </li>
-                        <li>
-                            <a href="/zhs/blog/tag/稷下學宮">稷下學宮</a>
-                        </li>
-                        <li>
-                            <a href="/zhs/blog/tag/精華轉載">精華轉載</a>
-                        </li>
-                        <li>
-                            <a href="/zhs/blog/tag/自娛自樂">自娛自樂</a>
-                        </li>
-                        <li>
-                            <a href="/zhs/blog/tag/設計開發">設計開發</a>
-                        </li>
+                        {% endfor %}
                     </ul>
                 </div>
                 <div class="sidebarBox">
@@ -164,22 +149,11 @@
                 <div class="sidebarBox">
                     <h4>存档</h4>
                     <ul>
-                        <li>
-                            <a href="/zhs/blog/archive/2017/10">2017年十月</a> (1)</li>
-                        <li>
-                            <a href="/zhs/blog/archive/2017/8">2017年八月</a> (1)</li>
-                        <li>
-                            <a href="/zhs/blog/archive/2017/6">2017年六月</a> (1)</li>
-                        <li>
-                            <a href="/zhs/blog/archive/2017/5">2017年五月</a> (2)</li>
-                        <li>
-                            <a href="/zhs/blog/archive/2017/3">2017年三月</a> (2)</li>
-                        <li>
-                            <a href="/zhs/blog/archive/2017/2">2017年二月</a> (3)</li>
-                        <li>
-                            <a href="/zhs/blog/archive/2016/12">2016年十二月</a> (1)</li>
-                        <li>
-                            <a href="/zhs/blog/archive/2016/10">2016年十月</a> (1)</li>
+                            {% for cate in postArchive %}
+                            <li>
+                                    <a href="/archive/{{cate.pathname}}">{{cate.name}}</a>({{cate.count}})
+                            </li>
+                            {% endfor %}
                     </ul>
                 </div>
             </aside>
@@ -263,4 +237,5 @@
     <script src='/theme/simplecorp/res/js/plugins/behaviours.js'></script>
     <script src='/theme/simplecorp/res/js/plugins/jquery.prettyPhoto.js'></script>
 </body>
+
 </html>

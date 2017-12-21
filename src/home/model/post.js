@@ -24,7 +24,10 @@ export default class extends think.model.relation {
 
   async init(...args) {
     super.init(...args);
-    let {feedFullText, postsListSize} = await this.model('options').getOptions();
+    let {
+      feedFullText,
+      postsListSize
+    } = await this.model('options').getOptions();
     this.feedFullText = feedFullText;
     this.postsListSize = +postsListSize;
   }
@@ -39,7 +42,7 @@ export default class extends think.model.relation {
       type: 0, //文章
       status: 3 //已经发布
     });
-    if(!where.create_time) {
+    if (!where.create_time) {
       where.create_time = {
         '<=': think.datetime()
       };
@@ -53,7 +56,7 @@ export default class extends think.model.relation {
    * @return {Promise}
    */
   getLastPostList() {
-    return think.cache('lastPostList', async () => {
+    return think.cache('lastPostList', async() => {
       let postList = await this.getPostList();
       return postList.data;
     });
@@ -69,19 +72,27 @@ export default class extends think.model.relation {
     page = page | 0 || 1;
 
     let field = options.field || 'id,title,pathname,create_time,summary,comment_num,options,content';
-    if((await this.model('user').count()) > 0) { field += ',user_id'; }
+    if ((await this.model('user').count()) > 0) {
+      field += ',user_id';
+    }
 
-    if(options.tag || options.cate) {
+    if (options.tag || options.cate) {
       let name = options.tag ? 'tag' : 'cate';
-      let {id} = await this.model(name)
+      let {
+        id
+      } = await this.model(name)
         .field('id')
         .setRelation(false)
-        .where({pathname: options.tag || options.cate})
+        .where({
+          pathname: options.tag || options.cate
+        })
         .find();
-      if(think.isEmpty(id)) {
+      if (think.isEmpty(id)) {
         return false;
       }
-      let where = this.getWhereCondition({[`${name}.${name}_id`]: id});
+      let where = this.getWhereCondition({
+        [`${name}.${name}_id`]: id
+      });
       return this
         .join({
           table: `post_${name}`,
@@ -91,6 +102,21 @@ export default class extends think.model.relation {
         .where(where)
         .order('create_time DESC')
         .page(page, this.postsListSize)
+        .countSelect();
+    }
+
+    //search by year and month
+    if (options.year) {
+      let where='';
+      where = 'YEAR(create_time)=' + Number(options.year)
+       + ' and MONTH(create_time)='
+       + Number(options.month)
+       + ' and is_public=1 and status=3 ';
+      return this.field(field)
+        .page(page, this.postsListSize)
+        .setRelation('user')
+        .order('create_time DESC')
+        .where(where)
         .countSelect();
     }
 
@@ -121,9 +147,11 @@ export default class extends think.model.relation {
    * @return {[type]}          [description]
    */
   async getPostDetail(pathname) {
-    let where = this.getWhereCondition({pathname});
+    let where = this.getWhereCondition({
+      pathname
+    });
     let detail = await this.where(where).fieldReverse('markdown_content,summary').find();
-    if(think.isEmpty(detail)) {
+    if (think.isEmpty(detail)) {
       return detail;
     }
     let createTime = think.datetime(detail.create_time);
@@ -154,7 +182,7 @@ export default class extends think.model.relation {
     let field = 'id,title,pathname,create_time,';
     let where = this.getWhereCondition();
 
-    if(this.feedFullText === '0') {
+    if (this.feedFullText === '0') {
       field += 'summary,content';
     } else {
       field += 'content';
@@ -200,7 +228,7 @@ export default class extends think.model.relation {
     let result = {};
     data.forEach(item => {
       let yearMonth = think.datetime(item.create_time, 'YYYY年MM月');
-      if(!(yearMonth in result)) {
+      if (!(yearMonth in result)) {
         result[yearMonth] = [];
       }
       result[yearMonth].push(item);
@@ -214,7 +242,9 @@ export default class extends think.model.relation {
    * @return {[type]}         [description]
    */
   async getPostSearch(keyword, page) {
-    let where = {'title|content': ['LIKE', `%${keyword}%`]}
+    let where = {
+      'title|content': ['LIKE', `%${keyword}%`]
+    }
     where = this.getWhereCondition(where);
     return this.where(where)
       .page(page, this.postsListSize)
