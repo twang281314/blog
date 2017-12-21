@@ -19,7 +19,7 @@ if(think.isFile(hostFile)) {
  */
 export default {
   host: host || process.env.HOST || '0.0.0.0',
-  port: port || process.env.PORT || 8360,
+  port: port || process.env.PORT || 8361,
   resource_reg: /^(static\/|theme\/|[^\/]+\.(?!js|html|xml)\w+$)/,
   resource_headers: {
     'Cache-Control': 'public, max-age=31536000',
