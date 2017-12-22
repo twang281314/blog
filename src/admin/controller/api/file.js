@@ -49,7 +49,7 @@ export default class extends Base {
     if(!file) { return this.fail('FILE_UPLOAD_ERROR'); }
 
     /** 检查文件类型 */
-    const ext = this.extWhiteList(file);
+    const ext = this.extWhiteList(file.originalFilename);
     if(!ext) {
       return this.fail('FILE_FORMAT_NOT_ALLOWED');
     }
@@ -77,7 +77,7 @@ export default class extends Base {
   }
 
   //MIME过滤
-  extWhiteList({filename}) {
+  extWhiteList(filename) {
     return ALLOW_EXTS.some(reg => reg.test(filename));
   }
 
