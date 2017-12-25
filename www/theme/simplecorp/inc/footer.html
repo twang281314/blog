@@ -67,6 +67,22 @@
             <div class="container clearfix">
                 <span class="right">
                     <a href="#" class="backtotop">↑</a>
-                </span>Originally designed by Site5 WordPress Themes. BYVoid refactored with Node.js, less, jade and CoffeeScript.</div>
+                </span>
+                &copy; {{ currentYear }}&nbsp;-&nbsp; {{options.title}}
+                {% if options.miitbeian or options.mpsbeian %}
+                  {% if options.miitbeian %}
+                  &nbsp;-&nbsp;<a target="_blank" rel="nofollow" class="external beian" href="http://www.miitbeian.gov.cn/">{{options.miitbeian}}</a>
+                  {% endif %}
+                  {% if options.mpsbeian %}
+                  &nbsp;-&nbsp;<a target="_blank" rel="nofollow" class="external beian" href="http://www.beian.gov.cn/">{{options.mpsbeian}}</a>
+                  {% endif %}
+                {%else%}
+                  &nbsp;-&nbsp;<a href="/">{{http.hostname}}</a>
+                {% endif %}
+                <br>
+                Powered by&nbsp;<a target="_blank" href="https://thinkjs.org">ThinkJS2.0</a>&nbsp;&amp;&nbsp;<a target="_blank" rel="nofollow" class="external" href="https://firekylin.org">FireKylin {{VERSION}}</a>
+                Designed by <a target="_blank" href="http://www.s5themes.com/theme/simplecorp/"> Site5 WordPress Themes-SimpleCorp.</a> 
+             
+            </div>
         </div>
     </footer>

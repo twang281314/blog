@@ -1,10 +1,4 @@
-{% extends './layout.html' %}
-
-{% block title -%}
-{{post.title}} - {{options.title}}
-{%- endblock %}
-
-{% block content %}
+{% extends './layout.html' %} {% block title -%} {{post.title}} - {{options.title}} {%- endblock %} {% block content %}
 
 <article data-post-id="blog/why-the-usa-is-so-boring-1" class="post hentry clearfix">
     <aside class="entry-meta">
@@ -14,36 +8,31 @@
             <span class="post-year">2017</span>
         </time>
         <ul>
-            <li>本文由
+            <!-- <li>本文由
                 <strong>
                     <a href="http://opencc.byvoid.com/" target="_blank">OpenCC</a>
-                </strong>转换</li>
+                </strong>转换</li>-->
             <li>
                 <span class="title">作者:
                     <span class="author">
-                            {% set user = post.user %}
-                            {% if user.display_name %}{{user.display_name}}{% else %}{{user.name}}{% endif %}
+                        {% set user = post.user %} {% if user.display_name %}{{user.display_name}}{% else %}{{user.name}}{% endif %}
                     </span>
                 </span>
             </li>
             <li>
+
                 <ul>
+                    {% if post.tag.length %} {% for tag in post.tag %}
                     <li>
-                        <a href="/blog/tag/美國">美國</a>
+                        <a href="/tag/{{tag.pathname}}" data-tag="{{tag.name}}">
+                            <code class="notebook">{{tag.name}}</code>
+                        </a>
                     </li>
-                    <li>
-                        <a href="/blog/tag/文化衝擊">文化衝擊</a>
-                    </li>
-                    <li>
-                        <a href="/blog/tag/城市規劃">城市規劃</a>
-                    </li>
-                    <li>
-                        <a href="/blog/tag/公共交通">公共交通</a>
-                    </li>
+                    {% endfor %} {% endif %}
                 </ul>
             </li>
             <li>
-                <span class="title">阅读: 178086</span>
+                    阅读:<span class="title" id="busuanzi_value_page_pv"></span>
             </li>
         </ul>
     </aside>

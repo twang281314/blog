@@ -62,6 +62,10 @@ export default class extends Base {
     let list = await model.getPostList(this.get('page'), where);
     list.data.forEach(post => {
       post.pathname = encodeURIComponent(post.pathname);
+      const create_time = new Date(post.create_time);
+      post.post_year = create_time.getFullYear();
+      post.post_month = create_time.getMonth();
+      post.post_day = create_time.getDay();
       try {
         post.options = JSON.parse(post.options) || {};
         post.featuredImage = post.options.featuredImage;
