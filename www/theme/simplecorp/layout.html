@@ -9,7 +9,8 @@
     <link rel="shortcut icon" href="{{options.favicon}}" type="image/x-icon">{% endif %}
     <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/rss.html">
     <link rel=search type="application/opensearchdescription+xml" href="/opensearch.xml" title="{{ options.title }}">
-    <link rel="stylesheet" href="/theme/simplecorp/res/css/style.css" type="text/css" data-ls="css_firekylin"> {% if options.keywords %}
+    <link rel="stylesheet" href="/theme/simplecorp/res/css/style.css" type="text/css" data-ls="css_firekylin">
+    <link href="https://cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.css" rel="stylesheet"> {% if options.keywords %}
     <meta name="keywords" content="{{options.keywords}}">{% endif %} {% if options.description %}
     <meta name="description" content="{{options.description}}">{% endif %}
 </head>
@@ -58,17 +59,33 @@
         {% include "./inc/footer.html" %}
     </div>
     <script src='/theme/simplecorp/res/js/plugins/jquery-1.8.2.js'></script>
-    <script src='/theme/simplecorp/res/js/plugins/modernizr-2.6.2.js'></script>
+    <!-- <script src='/theme/simplecorp/res/js/plugins/modernizr-2.6.2.js'></script>
     <script src='/theme/simplecorp/res/js/plugins/yepnope.js'></script>
     <script src='/theme/simplecorp/res/js/plugins/behaviours.js'></script>
-    <script src='/theme/simplecorp/res/js/plugins/jquery.prettyPhoto.js'></script>
+    <script src='/theme/simplecorp/res/js/plugins/jquery.prettyPhoto.js'></script> -->
     <script src='/theme/simplecorp/res/js/plugins/tagcanvas.min.js'></script>
+    <script src="https://cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js"></script>
 
-{% block page_self_script %}
-{% endblock %}
-{% if options.analyze_code %}
-  {{options.analyze_code | safe}}
-{% endif %}
+    {% block page_self_script %} {% endblock %} {% if options.analyze_code %} {{options.analyze_code | safe}} {% endif %}
+
+    <script type="text/javascript">
+        $('.entry-body-content').find('img').each(function () {
+            var alt = this.alt;
+            $(this).wrap('<a data-fancybox="gallery" href="' + this.src + '" title="' + alt +
+                '" class="fancybox" rel="gallery" />');
+        });
+        (function ($) {
+            $('.fancybox').fancybox({
+                transitionIn: 'elastic',
+                transitionOut: 'elastic'
+            });
+        })(jQuery);
+        $("a").bind("focus", function () {
+            if (this.blur) {
+                this.blur()
+            };
+        });
+    </script>
 </body>
 
 </html>
