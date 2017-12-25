@@ -16,28 +16,25 @@ export default class extends think.controller.base {
    * some base method in here
    */
   async __before() {
-    if (this.http.action === 'install') {
+    if(this.http.action === 'install') {
       return;
     }
-    if (!firekylin.isInstalled) {
+    if(!firekylin.isInstalled) {
       return this.redirect('/index/install');
     }
 
     let model = this.model('options');
     let options = await model.getOptions();
     this.options = options;
-    let {
-      navigation,
-      themeConfig
-    } = options;
+    let {navigation, themeConfig} = options;
     try {
       navigation = JSON.parse(navigation);
-    } catch (e) {
+    } catch(e) {
       navigation = [];
     }
     try {
       themeConfig = JSON.parse(themeConfig);
-    } catch (e) {
+    } catch(e) {
       themeConfig = {};
     }
 
@@ -51,7 +48,7 @@ export default class extends think.controller.base {
 
     //网站地址
     let siteUrl = this.options.site_url;
-    if (!siteUrl) {
+    if(!siteUrl) {
       siteUrl = 'http://' + this.http.host;
     }
     this.assign('site_url', siteUrl);
@@ -64,7 +61,7 @@ export default class extends think.controller.base {
     let tagModel = this.model('tag');
     let tagList = await tagModel.getTagArchive();
     this.assign('tags', tagList);
-
+    
     //按照月份归档
     let data = await this.model('post').getPostArchive();
     let postArchive = [];
@@ -93,7 +90,7 @@ export default class extends think.controller.base {
     if (this.http.url.match(/\.json(?:\?|$)/)) {
       let jsonOutput = {},
         assignObj = this.assign();
-      Object.keys(assignObj).forEach((key) => {
+      Object.keys(assignObj).forEach((key)=>{
         if (['controller', 'http', 'config', '_', 'options'].indexOf(key) === -1) {
           jsonOutput[key] = assignObj[key];
         }
