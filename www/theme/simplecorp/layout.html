@@ -10,7 +10,6 @@
     <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/rss.html">
     <link rel=search type="application/opensearchdescription+xml" href="/opensearch.xml" title="{{ options.title }}">
     <link rel="stylesheet" href="/theme/simplecorp/res/css/style.css" type="text/css" data-ls="css_firekylin">
-    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
     <link href="https://cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.css" rel="stylesheet"> {% if options.keywords %}
     <meta name="keywords" content="{{options.keywords}}">{% endif %} {% if options.description %}
     <meta name="description" content="{{options.description}}">{% endif %}
@@ -67,6 +66,7 @@
     <script src='/theme/simplecorp/res/js/plugins/jquery.prettyPhoto.js'></script> -->
     <script src='/theme/simplecorp/res/js/plugins/tagcanvas.min.js'></script>
     <script src="https://cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js"></script>
+    <script src="/theme/simplecorp/res/js/firekylin.js" data-ls="js_firekylin"></script>
 
     {% block page_self_script %} {% endblock %} {% if options.analyze_code %} {{options.analyze_code | safe}} {% endif %}
 
@@ -88,20 +88,10 @@
             };
         });
     </script>
+
     <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
     </script>
-    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
     <script>
-        const gitalk = new Gitalk({
-            clientID: 'e6bf5d1834d7f01abd9b',
-            clientSecret: '946efa7ad2cb75d39056df79749353c61c9aaf26',
-            repo: 'blog',
-            owner: 'twang281314',
-            admin: ['twang281314'],
-            distractionFreeMode: true,
-            id: location.pathname
-        });
-        gitalk.render('gitalk-container');
         (function () {
             var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
                 window.webkitRequestAnimationFrame || window.msRequestAnimationFrame ||
