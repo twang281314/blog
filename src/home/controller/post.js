@@ -62,10 +62,11 @@ export default class extends Base {
     let list = await model.getPostList(this.get('page'), where);
     list.data.forEach(post => {
       post.pathname = encodeURIComponent(post.pathname);
-      const create_time = new Date(post.create_time);
+      let create_time = new Date(post.create_time);
       post.post_year = create_time.getFullYear();
-      post.post_month = create_time.getMonth();
-      post.post_day = create_time.getDay();
+      post.post_month =  Utils.numberToChinese(create_time.getMonth()+1);
+      post.post_day = create_time.getDate();
+
       try {
         post.options = JSON.parse(post.options) || {};
         post.featuredImage = post.options.featuredImage;
@@ -119,6 +120,11 @@ export default class extends Base {
       detail.options = {};
       detail.featuredImage = '';
     }
+
+    let create_time = new Date(detail.create_time);
+    detail.post_year = create_time.getFullYear();
+    detail.post_month = Utils.numberToChinese(create_time.getMonth()+1);
+    detail.post_day = create_time.getDate();
     this.assign('post', detail);
 
     return this.displayView('post');
