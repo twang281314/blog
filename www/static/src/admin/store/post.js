@@ -94,6 +94,11 @@ export default Reflux.createStore({
       //PostAction.search.completed(data);
       this.trigger(data, 'search')
     });
+  },
+  onGetPathName(data){
+    let req = superagent.get('/admin/api/post/getPathName?title='+data);
+    return firekylin.request(req).then((data)=>{
+      this.trigger(data, 'getPathName');
+    });
   }
-
 })

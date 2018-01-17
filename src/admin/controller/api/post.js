@@ -3,6 +3,7 @@
 import push2Firekylin from 'push-to-firekylin';
 import moment from 'moment';
 import Base from './base';
+import request from 'request';
 
 export default class extends Base {
   constructor(http) {
@@ -10,7 +11,9 @@ export default class extends Base {
     this._modelInstance = this.modelInstance;
     Object.defineProperty(this, 'modelInstance', {
       get() {
-        return this._modelInstance.where({type: 0})
+        return this._modelInstance.where({
+          type: 0
+        })
       }
     })
   }
@@ -21,42 +24,46 @@ export default class extends Base {
   async getAction() {
     // this.modelInstance.field('id,user_id,type,status,title,pathname,create_time,update_time');
     let data;
-    if(this.id) {
-      if(this.id === 'lastest') {
+    if (this.id) {
+      if (this.id === 'lastest') {
         return this.lastest();
+      } else if (this.id === 'getPathName') {
+        return this.getPathName(this.get('title'));
       }
-      data = await this.modelInstance.where({id: this.id}).find();
+      data = await this.modelInstance.where({
+        id: this.id
+      }).find();
       //文章选项
-      if(data.options) {
+      if (data.options) {
         data.options = JSON.parse(data.options) || {};
-      }else{
+      } else {
         data.options = {};
       }
     } else {
       let where = {};
       //不是管理员，只显示个人的文章
-      if(this.userInfo.type !== 1) {
+      if (this.userInfo.type !== 1) {
         where.user_id = this.userInfo.id;
       }
 
-      if(this.get('status')) {
+      if (this.get('status')) {
         where.status = this.get('status');
       }
 
-      if(this.get('keyword')) {
+      if (this.get('keyword')) {
         let keywords = this.get('keyword').split(/\s+/g);
-        if(keywords.indexOf(':public') > -1 || keywords.indexOf(':private') > -1) {
+        if (keywords.indexOf(':public') > -1 || keywords.indexOf(':private') > -1) {
           where.is_public = Number(keywords.indexOf(':public') > -1);
           keywords = keywords.filter(word => word !== ':public' && word !== ':private');
         }
-        if(keywords.length > 0) {
+        if (keywords.length > 0) {
           where.title = ['like', keywords.map(word => `%${word}%`)];
         }
       }
 
-      if(this.get('cate')) {
+      if (this.get('cate')) {
         let cate = parseInt(this.get('cate'));
-        if(!isNaN(cate)) {
+        if (!isNaN(cate)) {
           this.modelInstance.join({
             table: 'post_cate',
             join: 'left',
@@ -95,13 +102,15 @@ export default class extends Base {
   async postAction() {
     let data = this.post();
     //check pathname
-    let post = await this.modelInstance.where({pathname: data.pathname}).find();
-    if(!think.isEmpty(post)) {
+    let post = await this.modelInstance.where({
+      pathname: data.pathname
+    }).find();
+    if (!think.isEmpty(post)) {
       return this.fail('PATHNAME_EXIST');
     }
 
     /** 如果是编辑发布文章的话默认状态改为审核中 **/
-    if(data.status === 3 && this.userInfo.type !== 1) {
+    if (data.status === 3 && this.userInfo.type !== 1) {
       data.status = 1;
     }
 
@@ -129,16 +138,18 @@ export default class extends Base {
     data.id = this.id;
 
     /** 判断接收的参数中是否有 markdown_content 来区别审核通过的状态修改和普通的文章更新 */
-    if(data.markdown_content) {
-      if(this.userInfo.type !== 1) {
-        let post = await this.modelInstance.where({id: this.id}).find();
-        if(post.user_id !== this.userInfo.id) {
+    if (data.markdown_content) {
+      if (this.userInfo.type !== 1) {
+        let post = await this.modelInstance.where({
+          id: this.id
+        }).find();
+        if (post.user_id !== this.userInfo.id) {
           return this.fail('USER_NO_PERMISSION');
         }
       }
 
       /** 如果是编辑发布文章的话默认状态改为审核中 **/
-      if(data.status === 3 && this.userInfo.type !== 1) {
+      if (data.status === 3 && this.userInfo.type !== 1) {
         data.status = 1;
       }
 
@@ -147,13 +158,15 @@ export default class extends Base {
 
       data = this.modelInstance.getPostTime(data);
       data = await this.modelInstance.getContentAndSummary(data);
-      if(data.tag) {
+      if (data.tag) {
         data.tag = await this.getTagIds(data.tag);
       }
     } else if (data.create_time) {
       /** 审核通过的状态修改，有 create_time 即需要更新时间，时间由服务器生成 */
 
-      const post = await this.modelInstance.where({id: data.id}).find();
+      const post = await this.modelInstance.where({
+        id: data.id
+      }).find();
       let options = JSON.parse(post.options || '{}');
       if (typeof options === 'string') {
         options = JSON.parse(options) || {};
@@ -173,18 +186,22 @@ export default class extends Base {
     }
 
     let rows = await this.modelInstance.savePost(data);
-    return this.success({affectedRows: rows});
+    return this.success({
+      affectedRows: rows
+    });
   }
 
   async deleteAction() {
-    if(!this.id) {
+    if (!this.id) {
       return this.fail('PARAMS_ERROR');
     }
 
     /** 如果不是管理员且不是本文作者则无权限删除文章 **/
-    if(this.userInfo.type !== 1) {
-      let post = await this.modelInstance.where({id: this.id}).find();
-      if(post.user_id !== this.userInfo.id) {
+    if (this.userInfo.type !== 1) {
+      let post = await this.modelInstance.where({
+        id: this.id
+      }).find();
+      if (post.user_id !== this.userInfo.id) {
         return this.fail('USER_NO_PERMISSION');
       }
     }
@@ -197,7 +214,7 @@ export default class extends Base {
     let post = Object.assign({}, postData);
     let postOpt = JSON.parse(post.options);
     let canPush = Array.isArray(postOpt.push_sites) && postOpt.push_sites.length > 0;
-    if(post.status !== 3 && post.is_public !== 1 && !canPush) {
+    if (post.status !== 3 && post.is_public !== 1 && !canPush) {
       return;
     }
     post = think.extend({}, post);
@@ -206,7 +223,7 @@ export default class extends Base {
     let push_sites = options.push_sites;
     let push_sites_keys = postOpt.push_sites;
 
-    if(post.markdown_content.slice(0, 5) !== '> 原文：') {
+    if (post.markdown_content.slice(0, 5) !== '> 原文：') {
       let site_url = options.hasOwnProperty('site_url') ? options.site_url : `http://${this.http.host}`;
       post.markdown_content = `> 原文：${site_url}/post/${post.pathname}.html
 
@@ -217,14 +234,20 @@ ${post.markdown_content}`;
     delete post.cate;
     delete post.options;
 
-    if(!Array.isArray(push_sites_keys)) { push_sites_keys = [push_sites_keys]; }
+    if (!Array.isArray(push_sites_keys)) {
+      push_sites_keys = [push_sites_keys];
+    }
     let pushes = push_sites_keys.map(key => {
-      let {appKey, appSecret, url} = push_sites[key];
+      let {
+        appKey,
+        appSecret,
+        url
+      } = push_sites[key];
       let p2fk = new push2Firekylin(url, appKey, appSecret);
       return p2fk.push(post);
     });
     let result = await Promise.all(pushes);
-    console.log('push result for debug: ', result);  // eslint-disable-line no-console
+    console.log('push result for debug: ', result); // eslint-disable-line no-console
   }
 
   async lastest() {
@@ -235,9 +258,9 @@ ${post.markdown_content}`;
 
   getPostTime(data) {
     data.update_time = think.datetime();
-    if(!data.create_time) {
+    if (!data.create_time) {
       data.create_time = data.update_time;
-    }else{
+    } else {
       data.create_time = think.datetime(data.create_time);
     }
     return data;
@@ -245,19 +268,56 @@ ${post.markdown_content}`;
 
 
   async getTagIds(tags) {
-    if(!tags) {
+    if (!tags) {
       return [];
     }
-    if(!think.isArray(tags)) {
+    if (!think.isArray(tags)) {
       tags = [tags];
     }
-    let modelInstance = this.model('tag').setRelation(false), tagIds = [];
+    let modelInstance = this.model('tag').setRelation(false),
+      tagIds = [];
     let promises = tags.map(name =>
-      modelInstance.where({name})
-        .thenAdd({name, pathname: name})
-        .then(data => tagIds.push({tag_id: data.id, name: name}))
+      modelInstance.where({
+        name
+      })
+      .thenAdd({
+        name,
+        pathname: name
+      })
+      .then(data => tagIds.push({
+        tag_id: data.id,
+        name: name
+      }))
     );
     await Promise.all(promises);
     return tagIds;
+  }
+  
+  /**
+   * 调用有道api自动获取文章英文超链接
+   * @param {*文章标题} title 
+   */
+  async getPathName(title) {
+    let youdaoApiUrl = 'http://openapi.youdao.com/api';
+    let appSecret = this.config('youDaoAppSecret');
+    let appKey = this.config('youdaoAppKey');
+    let salt = new Date().getTime(); //随机数
+    let query = title; //需要翻译的文本
+    let from = 'zh-CHS'; //源语言
+    let to = 'en'; //目标语言
+    let sign = think.md5(appKey + query + salt + appSecret); //生成签名
+    let result = await think.promisify(request.post)(youdaoApiUrl, {
+      form: {
+        q: query,
+        appKey: appKey,
+        salt: salt,
+        from: from,
+        to: to,
+        sign: sign
+      }
+    });
+
+    let translation = JSON.parse(result.body).translation.toString().replace('.', '').toLowerCase().split(' ').join('-');
+    return this.success(translation);
   }
 }

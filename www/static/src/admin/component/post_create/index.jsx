@@ -184,6 +184,11 @@ module.exports = class extends Base {
         }
         this.setState({postInfo: data});
         break;
+        case 'getPathName':
+        let postInfo = this.state.postInfo;
+        postInfo.pathname = data;
+        this.setState({postInfo});
+        break;
     }
   }
   /**
@@ -258,6 +263,9 @@ module.exports = class extends Base {
       onChange:(e)=>{
         postInfo.title = e.target.value;
         this.setState({postInfo});
+      },
+      onBlur:(e)=>{
+        postInfo.pathname = PostAction.getPathName(e.target.value);
       }
     };
 
