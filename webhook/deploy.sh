@@ -15,6 +15,7 @@ echo "changing permissions..."
 chown -R $WEB_USER:$WEB_USERGROUP $WEB_PATH
 echo "Start compile"
 cnpm install 
+npm run webpack.build.production
 npm run compile
-pm2 restart all
+pm2 restart  www/production.js
 echo "Finished."
