@@ -292,15 +292,17 @@ ${post.markdown_content}`;
     await Promise.all(promises);
     return tagIds;
   }
-  
+
   /**
    * 调用有道api自动获取文章英文超链接
    * @param {*文章标题} title 
    */
   async getPathName(title) {
+    let options = await this.model('options').getOptions(); //获取系统设置信息
+    let youdaoConfig = options.youdao_configuration.split(',');
     let youdaoApiUrl = 'http://openapi.youdao.com/api';
-    let appSecret = this.config('youDaoAppSecret');
-    let appKey = this.config('youdaoAppKey');
+    let appSecret = youdaoConfig[1];
+    let appKey = youdaoConfig[0];
     let salt = new Date().getTime(); //随机数
     let query = title; //需要翻译的文本
     let from = 'zh-CHS'; //源语言
@@ -317,7 +319,12 @@ ${post.markdown_content}`;
       }
     });
 
-    let translation = JSON.parse(result.body).translation.toString().replace('.', '').toLowerCase().split(' ').join('-');
-    return this.success(translation);
+    let translation = JSON.parse(result.body).translation;
+
+    if (translation) {
+      return this.success(translation.toString().replace('.', '').toLowerCase().split(' ').join('-'));
+    } else {
+      return this.success(result.body);
+    }
   }
 }

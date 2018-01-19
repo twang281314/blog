@@ -272,6 +272,17 @@ module.exports = class extends Base {
                 className="form-control"
               />
             </div>
+            <div className="form-group">
+              <label>有道智云应用配置信息</label>
+              <ValidatedInput
+                type="text"
+                name="youdao_configuration"
+                {...this.getProps('youdao_configuration')}
+                ref="miitbeian"
+                className="form-control"
+              />
+              <p className="help-block">请以半角逗号 "," 分割应用ID和应用密钥.</p>
+            </div>
             <button type="submit" {...BtnProps} className="btn btn-primary">
               {this.state.submitting ? '提交中...' : '提交'}
             </button>
