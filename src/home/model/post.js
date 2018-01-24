@@ -135,7 +135,6 @@ export default class extends think.model.relation {
 
     return this.field(field)
       .page(page, this.postsListSize)
-      .setRelation('user')
       .order('create_time DESC')
       .where(where)
       .countSelect();

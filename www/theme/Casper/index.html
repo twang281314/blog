@@ -144,7 +144,9 @@
                 <div class="post-card-content">
                     <a class="post-card-content-link" href="/post/{{post.pathname}}.html">
                         <header class="post-card-header">
-                            <span class="post-card-tags">{{tag}}</span>
+                                {% if post.tag.length %} {% for tag in post.tag %}
+                                        <span class="post-card-tags">{{tag.name}}</span>
+                                {% endfor %} {% endif %}
                             <h2 class="post-card-title">{{post.title}}</h2>
                         </header>
                         <section class="post-card-excerpt">

@@ -74,17 +74,17 @@ export default class extends think.controller.base {
     let tagModel = this.model('tag');
     let tagList = await tagModel.getTagArchive();
     this.assign('tags', tagList);
-//按照月份归档
-  let data = await this.model('post').getPostArchive();
-  let postArchive = [];
-  for (let item in data) {
-    postArchive.push({
-      pathname:item.split(/[年月]/).join('/'),
-      name: item,
-      count: data[item].length
-    });
-  }
-  this.assign('postArchive', postArchive);  
+    //按照月份归档
+    let data = await this.model('post').getPostArchive();
+    let postArchive = [];
+    for (let item in data) {
+      postArchive.push({
+        pathname: item.split(/[年月]/).join('/'),
+        name: item,
+        count: data[item].length
+      });
+    }
+    this.assign('postArchive', postArchive);
     // 最近10条文章
     let postModel = this.model('post');
     let lastPostList = await postModel.getLastPostList();
