@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" href="{{options.favicon_url |default('/static/img/firekylin.jpg')}}"> {% if options.favicon %}
+    <link rel="shortcut icon" href="{{options.favicon}}" type="image/x-icon">{% endif %}
+    <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/rss.html">
+    <link rel=search type="application/opensearchdescription+xml" href="/opensearch.xml" title="{{ options.title }}"> {% if options.keywords %}
+    <meta name="keywords" content="{{options.keywords}}">{% endif %} {% if options.description %}
+    <meta name="description" content="{{options.description}}">{% endif %}
+
+    <link rel="stylesheet" type="text/css" href="/theme/Even/res/css/style.css" />
+</head>
+<body>
+    <div id="mobile-navbar" class="mobile-navbar">
+        <div class="mobile-header-logo">
+            <a href="/." class="logo">Just For Fun</a>
+        </div>
+        <div class="mobile-navbar-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <nav id="mobile-menu" class="mobile-menu slideout-menu">
+        <ul class="mobile-menu-list">
+            <a href="/">
+                <li class="mobile-menu-item">
+                    Home
+                </li>
+            </a>
+            <a href="/archives/">
+                <li class="mobile-menu-item">
+                    Archives
+                </li>
+            </a>
+            <a href="/tags">
+                <li class="mobile-menu-item">
+                    Tags
+                </li>
+            </a>
+            <a href="/about">
+                <li class="mobile-menu-item">
+                    About
+                </li>
+            </a>
+        </ul>
+    </nav>
+    <div class="container" id="mobile-panel">
+        <header id="header" class="header">
+            <div class="logo-wrapper">
+                <a href="/." class="logo">Just For Fun</a>
+            </div>
+            <nav class="site-navbar">
+
+                <ul id="menu" class="menu">
+
+                    <li class="menu-item">
+                        <a class="menu-item-link" href="/">
+                            Home
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-item-link" href="/archives/">
+                            Archives
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-item-link" href="/tags">
+                            Tags
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-item-link" href="/about">
+                            About
+                        </a>
+                    </li>
+                    <li class="menu-search">
+                        <form>
+                            <i class="iconfont icon-search" id="open-search"></i>
+                            <input type="text" class="search-input" id="search-input" />
+                            <i class="iconfont icon-close" id="close-search"></i>
+                        </form>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <main id="main" class="main">
+            <div class="content-wrapper">
+                <div id="content" class="content">
+                        {% block content %}
+                        {% endblock %}
+                </div>
+            </div>
+        </main>
+        <footer id="footer" class="footer">
+
+            <div class="social-links">
+                <a href="mailto:twang281314@gmail.com" class="iconfont icon-email" title="email"></a>
+                <a href="https://github.com/twang281314" target="_blank" class="iconfont icon-github" title="github"></a>
+                <a href="/rss.xml" class="iconfont icon-rss" title="rss"></a>
+            </div>
+
+            <div class="copyright">
+                <span class="power-by">
+                    Powered by
+                    <a class="hexo-link" href="https://hexo.io/">Firekylin</a>
+                </span>
+
+                <span class="theme-info">
+                    Theme -
+                    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+                </span>
+
+                <span class="copyright-year">
+
+                    &copy; 2015 - 2018
+
+                    <span class="heart">
+                        <i class="iconfont icon-heart"></i>
+                    </span>
+                    <span class="author">anytao</span>
+                </span>
+            </div>
+        </footer>
+        <div class="back-to-top" id="back-to-top">
+            <i class="iconfont icon-up"></i>
+        </div>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/theme/Even/res/js/even.js"></script>
+</body>
+</html>

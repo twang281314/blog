@@ -226,7 +226,7 @@ export default class extends think.model.relation {
       .select();
     let result = {};
     data.forEach(item => {
-      let yearMonth = think.datetime(item.create_time, 'YYYY年MM月');
+      let yearMonth = think.datetime(item.create_time, 'YYYY');
       if (!(yearMonth in result)) {
         result[yearMonth] = [];
       }

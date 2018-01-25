@@ -1,0 +1,36 @@
+{% extends './layout.html' %}
+{% block title -%} 归档 - {{options.title}} {%- endblock %} {% block headers -%}
+<link rel="canonical" href="{{site_url}}/archives" />
+ {%- endblock %} 
+ {% block content %}
+<section id="archive" class="archive">
+
+    <div class="archive-title">
+        <h2 class="archive-name"> All </h2>
+        <span class="archive-post-counter">
+            78 Posts In Total
+        </span>
+    </div>
+
+    {% for yearMonth,data in list|dictsort  %}
+           
+    <div class="entry-content">
+        <div class="collection-title">
+                    <h2 class="archive-year">{{yearMonth}} ({{data.length}})</h2>
+        </div>
+        {% for item in data %}
+        <div class="archive-post">
+                <span class="archive-post-time">
+                        {{think.datetime(item.create_time, 'MM-DD')}}
+                </span>
+                <span class="archive-post-title">
+                    <a href="/post/{{item.pathname}}.html" class="archive-post-link">
+                        {{item.title}}
+                    </a>
+                </span>
+            </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</section>
+{% endblock %}

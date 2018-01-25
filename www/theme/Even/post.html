@@ -1,0 +1,61 @@
+{% extends './layout.html' %}
+
+{% block title -%}
+{{post.title}} - {{options.title}}
+{%- endblock %}
+
+{% block headers -%}
+<link rel="canonical" href="{{site_url}}/post/{{post.pathname}}.html" />
+{%- endblock %}
+
+{% block content %}
+
+<div id="content" class="content">
+        <article class="post">
+          <header class="post-header">
+            <h1 class="post-title">
+                {{post.title}}
+            </h1>
+            <div class="post-meta">
+              <span class="post-time">
+                Jan 21, 2018
+              </span>
+            </div>
+          </header>
+          <div class="post-content">
+                {{post.content  | safe}}
+          </div>
+       
+            {% include "./inc/copyright.html" %}
+
+            <footer class="post-footer">
+                 
+                    <div class="post-tags">
+                            {% if post.tag.length %}
+                            {% for tag in post.tag %}
+                            <a href="/tag/{{tag.pathname}}" data-tag="{{tag.name}}">
+                               {{tag.name}}
+                            </a>
+                            {% endfor %}
+                            {% endif %}
+                    </div>  
+                    {%if post.prev.title or post.next.title %}
+                    <nav class="post-nav">
+                            {% if post.prev.title %}
+                              <a class="prev" href="/post/{{ post.prev.pathname }}.html">
+                                <i class="iconfont icon-left"></i>
+                                <span class="prev-text nav-default">{{ post.prev.title }}</span>
+                              </a>
+                            {% endif %}
+                            {% if post.next.title %}
+                              <a class="next" href="/post/{{ post.next.pathname }}.html">
+                                <span class="next-text nav-default">{{ post.next.title }}</span>
+                                <i class="iconfont icon-right"></i>
+                              </a>
+                            {% endif %}
+                    </nav>
+                    {% endif %}
+            </footer>
+      </article> 
+ </div>
+{% endblock %}
