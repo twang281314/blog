@@ -1,0 +1,72 @@
+{% extends './layout.html' %}
+
+{% block title -%}
+站内搜索 - {{options.title}}
+{%- endblock %}
+
+{% block headers -%}
+<link rel="canonical" href="{{site_url}}/search.html{% if keyword %}?keyword={{keyword}}{% endif %}{% if pagination.currentPage > 1 %}&amp;page={{pagination.currentPage}}{% endif %}" />
+{%- endblock %}
+
+{% block content %}
+<div>
+  <h1 class="title">站内搜索</h1>
+  <div class="entry-content">
+    <div id="search">
+      <form action="/search.html">
+        <input maxlength="80" class="search-input" placeholder="请输入关键字..." id="keyword" name="keyword" value="{{ keyword }}" type="search" required />
+        <input class="submit" type="submit" value="搜索" />
+      </form>
+    </div>
+
+    {% if keyword %}
+      <div id="searchResult">
+        {% if searchData.count %}
+          <div class="info">
+            本次搜索找到结果 {{ searchData.count }} 条
+          </div>
+        {% endif %}
+
+        {% if not searchData.count %}
+          <div class="no-result">没有找到任何结果，请更换查询词试试~</div>
+          <div class="item">
+            <div class="title">或者试试 Google 站内搜索： <a target="_blank" href="https://www.google.com/#q={{ ('site:' + http.hostname + ' ' + keyword)|urlencode }}">site:{{http.hostname}} {{ keyword }}</a></div>
+          </div>
+        {% endif %}
+
+        {% for post in searchData.data %}
+        <article class="post">
+                <header class="post-header">
+                    <h1 class="post-title">
+                        <a class="post-link" href="/post/{{post.pathname}}.html">{{post.title}}</a>
+                    </h1>
+                    <div class="post-meta">
+                        <span class="post-time">
+                           {{think.datetime(post.create_time, 'MM月DD, YYYY')}}
+                        </span>
+                    </div>
+                </header>
+                <div class="post-content">
+                        <p> {{post.summary | safe}}</p>
+                    <div class="read-more">
+                        <a href="/post/{{post.pathname}}.html" class="read-more-link">Read more..</a>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div id="searchResult">
+        <div class="hot-words">
+          热搜词：
+          {% for tag in hotTags %}
+            <a href="?keyword={{ tag.name }}">{{ tag.name }}</a>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% include "./inc/pagination.html" %}
+{% endblock %}

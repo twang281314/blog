@@ -1,17 +1,16 @@
 <div class="post-copyright">
         <p class="copyright-item">
           <span>Author: </span>
-          <span>anytao</span>
+          <span>  {% set user = post.user %} {% if user.display_name %}{{user.display_name}}{% else %}{{user.name}}{% endif %}</span>
         </p>
         <p class="copyright-item">
           <span>Origin: </span>
-          <a href="http://lijundong.com">http://blog.anytao.net</a>
+          <a href="{{site_url}}">{{site_url}}</a>
         </p>
         <p class="copyright-item">
           <span>Link: </span>
-          <a href="http://lijundong.com/year-again-2018/">http://lijundong.com/year-again-2018/</a>
+          <a href="{{site_url}}/post/{{post.pathname}}.html">{{site_url}}/post/{{post.pathname}}.html/</a>
         </p>
-    
         <p class="copyright-item lincese">
           本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可
         </p>
