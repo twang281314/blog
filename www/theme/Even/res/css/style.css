@@ -928,396 +928,7 @@ h6 {
     border: 1px double #ededed;
 }
 
-.post .post-content code,
-.post .post-content pre {
-    padding: 7px;
-    font-size: 13px;
-    font-family: Consolas, Monaco, Menlo, Consolas, monospace;
-    background: #f5f5f5;
-}
 
-.post .post-content code {
-    padding: 3px 5px;
-    border-radius: 4px;
-    color: #c7254e;
-}
-
-.post .post-content .highlight {
-    margin: 1em 0;
-    border-radius: 5px;
-    overflow-x: auto;
-    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.125);
-    position: relative;
-}
-
-.post .post-content .highlight table {
-    position: relative;
-}
-
-.post .post-content .highlight table::after {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    padding: 2px 7px;
-    font-size: 13px;
-    font-weight: bold;
-    color: #b1b1b1;
-    background: #ededed;
-    content: 'Code';
-}
-
-.post .post-content .highlight.html>table::after {
-    content: "HTML";
-}
-
-.post .post-content .highlight.html>figcaption>span::after {
-    content: " · HTML";
-}
-
-.post .post-content .highlight.html figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight.js>table::after {
-    content: "JavaScript";
-}
-
-.post .post-content .highlight.js>figcaption>span::after {
-    content: " · JavaScript";
-}
-
-.post .post-content .highlight.js figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight.bash>table::after {
-    content: "Bash";
-}
-
-.post .post-content .highlight.bash>figcaption>span::after {
-    content: " · Bash";
-}
-
-.post .post-content .highlight.bash figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight.css>table::after {
-    content: "CSS";
-}
-
-.post .post-content .highlight.css>figcaption>span::after {
-    content: " · CSS";
-}
-
-.post .post-content .highlight.css figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight.scss>table::after {
-    content: "Scss";
-}
-
-.post .post-content .highlight.scss>figcaption>span::after {
-    content: " · Scss";
-}
-
-.post .post-content .highlight.scss figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight.java>table::after {
-    content: "Java";
-}
-
-.post .post-content .highlight.java>figcaption>span::after {
-    content: " · Java";
-}
-
-.post .post-content .highlight.java figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight.xml>table::after {
-    content: "XML";
-}
-
-.post .post-content .highlight.xml>figcaption>span::after {
-    content: " · XML";
-}
-
-.post .post-content .highlight.xml figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight.python>table::after {
-    content: "Python";
-}
-
-.post .post-content .highlight.python>figcaption>span::after {
-    content: " · Python";
-}
-
-.post .post-content .highlight.python figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight.json>table::after {
-    content: "JSON";
-}
-
-.post .post-content .highlight.json>figcaption>span::after {
-    content: " · JSON";
-}
-
-.post .post-content .highlight.json figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight.swift>table::after {
-    content: "Swift";
-}
-
-.post .post-content .highlight.swift>figcaption>span::after {
-    content: " · Swift";
-}
-
-.post .post-content .highlight.swift figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight.ruby>table::after {
-    content: "Ruby";
-}
-
-.post .post-content .highlight.ruby>figcaption>span::after {
-    content: " · Ruby";
-}
-
-.post .post-content .highlight.ruby figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight.php>table::after {
-    content: "PHP";
-}
-
-.post .post-content .highlight.php>figcaption>span::after {
-    content: " · PHP";
-}
-
-.post .post-content .highlight.php figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight.c>table::after {
-    content: "C";
-}
-
-.post .post-content .highlight.c>figcaption>span::after {
-    content: " · C";
-}
-
-.post .post-content .highlight.c figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight.cpp>table::after {
-    content: "C++";
-}
-
-.post .post-content .highlight.cpp>figcaption>span::after {
-    content: " · C++";
-}
-
-.post .post-content .highlight.cpp figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight.scheme>table::after {
-    content: "Scheme";
-}
-
-.post .post-content .highlight.scheme>figcaption>span::after {
-    content: " · Scheme";
-}
-
-.post .post-content .highlight.scheme figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight.objectivec>table::after {
-    content: "Objective-C";
-}
-
-.post .post-content .highlight.objectivec>figcaption>span::after {
-    content: " · Objective-C";
-}
-
-.post .post-content .highlight.objectivec figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight.yml>table::after {
-    content: "YAML";
-}
-
-.post .post-content .highlight.yml>figcaption>span::after {
-    content: " · YAML";
-}
-
-.post .post-content .highlight.yml figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight.stylus>table::after {
-    content: "Stylus";
-}
-
-.post .post-content .highlight.stylus>figcaption>span::after {
-    content: " · Stylus";
-}
-
-.post .post-content .highlight.stylus figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight.sql>table::after {
-    content: "SQL";
-}
-
-.post .post-content .highlight.sql>figcaption>span::after {
-    content: " · SQL";
-}
-
-.post .post-content .highlight.sql figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight.http>table::after {
-    content: "HTTP";
-}
-
-.post .post-content .highlight.http>figcaption>span::after {
-    content: " · HTTP";
-}
-
-.post .post-content .highlight.http figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight.go>table::after {
-    content: "Go";
-}
-
-.post .post-content .highlight.go>figcaption>span::after {
-    content: " · Go";
-}
-
-.post .post-content .highlight.go figcaption+table::after {
-    display: none;
-}
-
-.post .post-content .highlight figcaption {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    padding: 2px 7px;
-    font-size: 13px;
-    font-weight: bold;
-    color: #b1b1b1;
-    background: #ededed;
-    z-index: 20;
-    overflow-x: hidden;
-    box-sizing: border-box;
-}
-
-.post .post-content .highlight figcaption>a {
-    position: absolute;
-    right: 0;
-    display: inline-box;
-    margin-right: 7px;
-    font-weight: 400;
-}
-
-.post .post-content .highlight figcaption>a:hover {
-    text-decoration: none;
-    border: 0;
-}
-
-.post .post-content .highlight .code pre {
-    margin: 0;
-    padding: 30px 10px 10px;
-}
-
-.post .post-content .highlight .gutter {
-    width: 10px;
-    color: #cacaca;
-}
-
-.post .post-content .highlight .gutter pre {
-    margin: 0;
-    padding: 30px 7px 10px;
-}
-
-.post .post-content .highlight .line {
-    height: 20px;
-}
-
-.post .post-content .highlight table,
-.post .post-content .highlight tr,
-.post .post-content .highlight td {
-    margin: 0;
-    padding: 0;
-    /* width: 100%; */
-    border-collapse: collapse;
-}
-
-.post .post-content .highlight .code .comment,
-.post .post-content .highlight .code .quote {
-    color: #93a1a1;
-}
-
-.post .post-content .highlight .code .keyword,
-.post .post-content .highlight .code .selector-tag,
-.post .post-content .highlight .code .addition {
-    color: #859900;
-}
-
-.post .post-content .highlight .code .number,
-.post .post-content .highlight .code .string,
-.post .post-content .highlight .code .meta .meta-string,
-.post .post-content .highlight .code .literal,
-.post .post-content .highlight .code .doctag,
-.post .post-content .highlight .code .regexp {
-    color: #2aa198;
-}
-
-.post .post-content .highlight .code .attribute,
-.post .post-content .highlight .code .attr,
-.post .post-content .highlight .code .variable,
-.post .post-content .highlight .code .template-variable,
-.post .post-content .highlight .code .class .title,
-.post .post-content .highlight .code .type {
-    color: #b58900;
-}
-
-.post .post-content .highlight .code .symbol,
-.post .post-content .highlight .code .bullet,
-.post .post-content .highlight .code .subst,
-.post .post-content .highlight .code .meta,
-.post .post-content .highlight .code .meta .keyword,
-.post .post-content .highlight .code .selector-attr,
-.post .post-content .highlight .code .selector-pseudo,
-.post .post-content .highlight .code .link {
-    color: #cb4b16;
-}
-
-.post .post-content .highlight .code .built_in,
-.post .post-content .highlight .code .deletion {
-    color: #dc322f;
-}
 
 .post .post-content .read-more .read-more-link {
     color: #16982B;
@@ -2108,3 +1719,38 @@ h6 {
 #searchResult .hot-words {
     margin-top: 20px;
 }
+
+.hljs {
+	border: 0;
+	font-family: "Consulas", "Courier New", Courier, mono, serif;
+	font-size: 12px;
+	background: #eee !important;
+	display: block;
+	padding: 1px;
+	margin: 0;
+	/* width: 100%; */
+	font-weight: 200;
+	color: #333;
+	white-space: pre-wrap
+}
+.hljs ul {
+	list-style: decimal;
+	background-color: #fff;
+	margin: 0px 0px 0 40px !important;
+	padding: 0px;
+}
+.hljs ul li {
+	list-style: decimal-leading-zero;
+	border-left: 1px solid #ddd !important;
+	background: #fff;
+	padding: 5px!important;
+	margin: 0 !important;
+	line-height: 14px;
+	word-break: break-all;
+	word-wrap: break-word;
+}
+.hljs ul li:nth-of-type(even) {
+	background-color: #fcfcfc;
+	color: inherit;
+}
+
