@@ -1,0 +1,30 @@
+{% extends './layout.html' %}
+
+{% block title -%}
+标签 - {{options.title}}
+{%- endblock %}
+
+{% block headers -%}
+<link rel="canonical" href="{{site_url}}/tags" />
+{%- endblock %}
+
+{% block content %}
+            
+    <div class="tag-cloud">
+      <div class="tag-cloud-title">
+        {{tags.length}} Tags In Total
+      </div>
+      <div class="tag-cloud-tags">
+            {% for tag in tags %}
+            <a href="/tag/{{tag.pathname}}" data-tag="{{tag.name}}">{{tag.name}}({{tag.count}})</a>
+            {% endfor %}
+    </div>
+{% endblock %}
+
+{% block page_self_script %}
+<script>
+    $('.tag-cloud-tags a').each(function(){
+        $(this).css('font-size', Math.floor(Math.random()*(20-16+1)+16)+'px');
+    })
+</script>
+{% endblock %}

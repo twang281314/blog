@@ -8,11 +8,11 @@
     <div class="archive-title">
         <h2 class="archive-name"> All </h2>
         <span class="archive-post-counter">
-            78 Posts In Total
+            {{total}} Posts In Total
         </span>
     </div>
 
-    {% for yearMonth,data in list|dictsort  %}
+    {% for yearMonth,data in list  %}
            
     <div class="entry-content">
         <div class="collection-title">

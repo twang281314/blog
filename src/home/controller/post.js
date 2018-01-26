@@ -64,7 +64,7 @@ export default class extends Base {
       post.pathname = encodeURIComponent(post.pathname);
       let create_time = new Date(post.create_time);
       post.post_year = create_time.getFullYear();
-      post.post_month =  Utils.numberToChinese(create_time.getMonth()+1);
+      post.post_month = Utils.numberToChinese(create_time.getMonth() + 1);
       post.post_day = create_time.getDate();
 
       try {
@@ -123,7 +123,7 @@ export default class extends Base {
 
     let create_time = new Date(detail.create_time);
     detail.post_year = create_time.getFullYear();
-    detail.post_month = Utils.numberToChinese(create_time.getMonth()+1);
+    detail.post_month = Utils.numberToChinese(create_time.getMonth() + 1);
     detail.post_day = create_time.getDate();
     this.assign('post', detail);
 
@@ -188,11 +188,16 @@ export default class extends Base {
       month: this.get('month')
     };
 
+    let total = 0;
     let data = await model.getPostArchive();
     for (let i in data) {
-      data[i].map(post => post.pathname = encodeURIComponent(post.pathname))
+      data[i].map(post => {
+        post.pathname = encodeURIComponent(post.pathname);
+        total++;
+      })
     }
     this.assign('list', data);
+    this.assign('total', total);
 
     //分页查询
     let allPost = await model.getPostList(this.get('page'), where);
@@ -202,7 +207,7 @@ export default class extends Base {
     let {
       ...pagination
     } = allPost;
-  
+
     this.assign('pagination', pagination);
     return this.displayView('archive');
   }
