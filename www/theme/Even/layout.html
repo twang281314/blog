@@ -128,7 +128,15 @@
         </div>
     </div>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/slideout/1.0.1/slideout.min.js"></script>
     <script type="text/javascript" src="/theme/Even/res/js/even.js"></script>
+    <script>
+    $(document).ready(function () {
+        Even.backToTop();
+        Even.mobileNavbar();
+    });
+
+    </script>
     {% block page_self_script %}
     {% endblock %}
     {% if options.analyze_code %} {{options.analyze_code | safe}} {% endif %}

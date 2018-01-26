@@ -23,7 +23,7 @@
             </div>
           </header>
           <div class="post-content">
-                {{post.content  | safe}}
+                {{post.content | replace('class="toc"','class="post-toc"')  | safe}}
           </div>
        
             {% include "./inc/copyright.html" %}
@@ -66,6 +66,14 @@
 <script src="https://cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js"></script>
 
 <script>
+  if($('.post-toc').length && $('.post-toc').html()){
+    $('.post-toc a').each(function(){
+      $(this).addClass('toc-link');
+    });
+    Even.toc();
+  }else{
+    $('.post-toc').hide();
+  }
 $('.post-content').find('img').each(function () {
   var alt = this.alt;
   $(this).wrap('<a data-fancybox="gallery" href="' + this.src + '" title="' + alt +

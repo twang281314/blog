@@ -53,7 +53,7 @@
       var SPACING = 20;
       var $toc = $('.post-toc'),
           $footer = $('.post-footer');
-  
+      
       if ($toc.length) {
         var minScrollTop = $toc.offset().top - SPACING,
             maxScrollTop = $footer.offset().top - $toc.height() - SPACING;
