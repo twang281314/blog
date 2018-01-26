@@ -131,5 +131,6 @@
     <script type="text/javascript" src="/theme/Even/res/js/even.js"></script>
     {% block page_self_script %}
     {% endblock %}
+    {% if options.analyze_code %} {{options.analyze_code | safe}} {% endif %}
 </body>
 </html>
