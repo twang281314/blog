@@ -33,6 +33,7 @@ html {
 
 body {
     margin: 0;
+    background-color: #f5f5d5;
 }
 
 
@@ -511,7 +512,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.5;
     color: #34495e;
-    background: #fefefe;
+    background: #f5f5d5;
     scroll-behavior: smooth;
     border-top: 3px solid #16982B;
 }
@@ -686,7 +687,7 @@ h6 {
     right: 0;
     width: 1em;
     height: 1.5em;
-    background: #fefefe;
+    background: #fefefe; 
     overflow: hidden;
     transition-duration: 0.2s;
     transition-property: width;
@@ -1448,7 +1449,7 @@ h6 {
 .slideout-panel {
     position: relative;
     z-index: 1;
-    background-color: #fefefe;
+    background-color: #f5f5d5;
     min-height: 100vh;
 }
 
