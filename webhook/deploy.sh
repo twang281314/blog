@@ -17,5 +17,5 @@ echo "Start compile"
 cnpm install 
 npm run webpack.build.production
 npm run compile
-pm2 restart  www/production.js
+pm2 restart  production.js
 echo "Finished."
