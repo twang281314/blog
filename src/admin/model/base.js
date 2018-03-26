@@ -1,9 +1,2 @@
-'use strict';
-/**
- * relation model
- */
-export default class extends think.model.relation {
-  init(...args) {
-    super.init(...args);
-  }
+module.exports = class extends think.Model {
 }

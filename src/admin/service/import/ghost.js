@@ -1,11 +1,11 @@
-import Base from './base';
+const Base = require('./base');
 
 const GHOST_POST_STATUS = {
   published: 3, //发布
   draft: 0 //草稿
 };
 
-export default class extends Base {
+module.exports = class extends Base {
   /**
    * 导入用户
    */
@@ -103,7 +103,7 @@ export default class extends Base {
         };
         await this.postModelInstance.addPost(post);
       } catch(e) {
-        console.log(e);  // eslint-disable-line no-console
+        console.log(e); // eslint-disable-line no-console
       }
     });
     Promise.all(postsPromise);

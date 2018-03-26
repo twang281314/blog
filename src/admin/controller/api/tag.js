@@ -1,8 +1,6 @@
-'use strict';
+const Base = require('./base');
 
-import Base from './base';
-
-export default class extends Base {
+module.exports = class extends Base {
   /**
    * get
    * @return {[type]} [description]

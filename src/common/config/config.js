@@ -1,27 +1,19 @@
-'use strict';
-
-import fs from 'fs';
+const fs = require('fs');
+const path = require('path');
 
 let port;
-let portFile = think.ROOT_PATH + think.sep + 'port';
-if(think.isFile(portFile)) {
+const portFile = path.join(think.ROOT_PATH, 'port');
+if (think.isFile(portFile)) {
   port = fs.readFileSync(portFile, 'utf8');
 }
 
 let host;
-let hostFile = think.ROOT_PATH + think.sep + 'host';
-if(think.isFile(hostFile)) {
+const hostFile = path.join(think.ROOT_PATH, 'host');
+if (think.isFile(hostFile)) {
   host = fs.readFileSync(hostFile, 'utf8');
 }
 
-/**
- * config
- */
-export default {
+module.exports = {
   host: host || process.env.HOST || '0.0.0.0',
-  port: port || process.env.PORT || 8361,
-  resource_reg: /^(static\/|theme\/|[^\/]+\.(?!js|html|xml)\w+$)/,
-  resource_headers: {
-    'Cache-Control': 'public, max-age=31536000',
-  }
+  port: port || process.env.PORT || 8361
 };

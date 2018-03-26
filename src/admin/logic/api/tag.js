@@ -1,4 +1,4 @@
-export default class extends think.logic.base {
+module.exports = class extends think.Logic {
 
   /**
    * set tag pathname with encoding name when user haven't set.
@@ -13,7 +13,9 @@ export default class extends think.logic.base {
 
   postAction() {
     this.rules = {
-      name: 'required'
+      name: {
+        required: true
+      }
     };
 
     this.checkPathname();
@@ -21,7 +23,9 @@ export default class extends think.logic.base {
 
   putAction() {
     this.rules = {
-      name: 'required'
+      name: {
+        required: true
+      }
     };
 
     this.checkPathname();

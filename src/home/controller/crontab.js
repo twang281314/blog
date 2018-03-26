@@ -1,16 +1,12 @@
-'use strict';
+const Base = require('./base');
 
-import Base from './base';
-
-export default class extends Base {
+module.exports = class extends Base {
   /**
    * sync comment num
    * @return {[type]} [description]
    */
-  async syncCommentAction() {
-    let SyncService = this.service('comment');
-    let instance = new SyncService();
-    await instance.sync();
+  async sync_commentAction() {
+    await this.service('comment', 'home').sync();
     this.success();
   }
 }

@@ -1,7 +1,10 @@
-import Post from './post';
+const Post = require('./post');
 
-export default class extends Post {
-  tableName = 'post';
+module.exports = class extends Post {
+  constructor(...args) {
+    super(...args);
+    this.modelName = 'post';
+  }
 
   addPost(data) {
     let create_time = think.datetime();

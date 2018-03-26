@@ -1,8 +1,7 @@
-'use strict';
+const path = require('path');
+const Base = require('./base');
 
-import Base from './base';
-
-export default class extends Base {
+module.exports = class extends Base {
   /**
    * 首页如果设置了自定义首页则渲染对应页面
    * @return {[type]} [description]
@@ -21,14 +20,15 @@ export default class extends Base {
    * 输出opensearch
    */
   opensearchAction() {
-    this.http.type('text/xml');
-
-    return this.end(`<?xml version="1.0" encoding="UTF-8"?>
+    this.ctx.type = 'text/xml';
+    this.ctx.body = `<?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
     <ShortName>${this.options.title}</ShortName>
     <Description>${this.options.description}</Description>
     <Url type="text/html" template="${this.options.site_url}/search.html?s={searchTerms}" />
-</OpenSearchDescription>`);
+</OpenSearchDescription>`;
+
+    return true;
   }
 
   /**
@@ -41,8 +41,8 @@ export default class extends Base {
     this.assign('list', list);
     this.assign('currentTime', (new Date()).toString());
 
-    this.type('text/xml');
-    return super.display(this.HOME_VIEW_PATH + 'rss.xml');
+    this.ctx.type = 'text/xml';
+    return super.display(path.join(this.HOME_VIEW_PATH, 'rss.xml'));
   }
 
   /**
@@ -54,28 +54,27 @@ export default class extends Base {
     let postList = postModel.getPostSitemapList();
     this.assign('postList', postList);
 
-    this.type('text/xml');
-    return this.display(this.HOME_VIEW_PATH + 'sitemap.xml');
+    this.ctx.type = 'text/xml';
+    return this.display(path.join(this.HOME_VIEW_PATH, 'sitemap.xml'));
   }
   /**
    * install
    * @return {[type]} [description]
    */
   async installAction() {
-    let step = this.param('step');
-    let InstallService = this.service('install');
-    let instance = new InstallService(this.ip());
+    let step = this.get('step') || this.post('step');
+    let instance = this.service('install', 'home', this.ctx.ip);
     let message;
 
     this.assign({step});
-    if(this.isGet()) {
+    if(this.isGet) {
       if(firekylin.isInstalled) {
         return this.redirect('/');
       }
 
       /** check db config exist */
-      let dbConfig = this.config('db');
-      dbConfig = dbConfig.adapter[dbConfig.type];
+      let dbConfig = this.config('model', undefined, 'common');
+      dbConfig = dbConfig[dbConfig.type];
       let isDBConfig = think.isObject(dbConfig)
                         && dbConfig.host
                         && dbConfig.port
@@ -93,7 +92,7 @@ export default class extends Base {
           if(!isDBConfig) {
             this.redirect('/index/install');
           }
-          if(await InstallService.checkInstalled()) {
+          if(await instance.checkInstalled()) {
             message = 'success';
           }
         break;
@@ -142,6 +141,7 @@ export default class extends Base {
         };
         try {
           await instance.saveDbInfo(dbInfo);
+          process.send('think-cluster-reload-workers');
           message = 'success';
         } catch(e) {
           message = e;
@@ -161,7 +161,7 @@ export default class extends Base {
     if(!this.options.hasOwnProperty('push') || +this.options.push === 0) {
       return this.fail('PUSH_CLOSED');
     }
-    if(this.isGet()) {
+    if(this.isGet) {
       return this.display();
     }
 
@@ -170,8 +170,8 @@ export default class extends Base {
     user.status = firekylin.USER_DISABLED;
     user.create_time = think.datetime();
     user.last_login_time = user.create_time;
-    user.create_ip = this.ip();
-    user.last_login_ip = this.ip();
+    user.create_ip = this.ctx.ip;
+    user.last_login_ip = this.ctx.ip;
 
     await this.model('user').where({name: user.name, email: user.email, _logic: 'OR'}).thenAdd(user);
     this.assign('message', 'success');

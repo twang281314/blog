@@ -1,10 +1,10 @@
-import fs from 'fs';
-import path from 'path';
-import {execSync} from 'child_process';
-import Base from './base';
+const fs = require('fs');
+const path = require('path');
+const {execSync} = require('child_process');
+const Base = require('./base');
 
 const PATH = path.join(think.RUNTIME_PATH, 'importMarkdownFileToFirekylin');
-export default class extends Base {
+module.epxorts = class extends Base {
   constructor(think) {
     super(think);
     this._think = think;
@@ -60,7 +60,7 @@ export default class extends Base {
         post = await think.model('post', null, 'admin').getContentAndSummary(post);
         await this.postModelInstance.addPost(post);
       } catch(e) {
-        console.log(e);  // eslint-disable-line no-console
+        console.log(e); // eslint-disable-line no-console
       }
     });
     Promise.all(postsPromise);
@@ -77,7 +77,7 @@ export default class extends Base {
 
   parseFile(file) {
     try {
-      const filePath = file.path.replace(/[^a-zA-Z0-9.\/_-]/g, '');
+      const filePath = file.path.replace(/[^a-zA-Z0-9./_-]/g, '');
       execSync(`rm -rf ${PATH}; mkdir ${PATH}; cd ${PATH}; tar zxvf "${filePath}"`);
       let files = fs.readdirSync(PATH, {encoding: 'utf-8'});
       if(!files.length) { return []; }

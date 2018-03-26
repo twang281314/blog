@@ -1,21 +1,10 @@
-'use strict';
+const Base = require('./base');
 
-import Base from './base';
-/**
- * relation model
- */
-export default class extends Base {
-  /**
-   * init
-   * @param  {} args []
-   * @return {}         []
-   */
-  init(...args) {
-    super.init(...args);
-
-    this.relation = {
+module.exports = class extends Base {
+  get relation() {
+    return {
       post_tag: {
-        type: think.model.HAS_MANY,
+        type: think.Model.HAS_MANY,
         fKey: 'tag_id'
       }
     }

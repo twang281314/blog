@@ -1,6 +1,4 @@
-'use strict';
-
-import request from 'request';
+const request = require('request');
 
 request.defaults({
   strictSSL: false,
@@ -12,14 +10,7 @@ const _ = {
   post: think.promisify(request.post, request)
 };
 
-export default class extends think.service.base {
-  /**
-   * init
-   * @return {}         []
-   */
-  init(...args) {
-    super.init(...args);
-  }
+module.exports = class extends think.Service {
   /**
    * sync post comments
    * @return {[type]} [description]
@@ -88,7 +79,7 @@ export default class extends think.service.base {
       if (!response) {
         continue;
       }
-      let data = response.body.match(/DISQUSWIDGETS.displayCount\(([^\(\)]+)\);/);
+      let data = response.body.match(/DISQUSWIDGETS.displayCount\(([^()]+)\);/);
       if (!data) {
         continue;
       }
@@ -342,7 +333,7 @@ export default class extends think.service.base {
     //get gtalk and github config
     let gtalkConfig = JSON.parse(comment.name);
 
-    const base64Header = new Buffer(gtalkConfig.githubUserName + ':' + gtalkConfig.githubPassWord).toString('base64');
+    const base64Header = Buffer.from(gtalkConfig.githubUserName + ':' + gtalkConfig.githubPassWord).toString('base64');
 
     let url='https://api.github.com/search/issues?q=author:'+gtalkConfig.owner;
     const options = {

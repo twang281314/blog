@@ -1,10 +1,4 @@
-'use strict';
-/**
- * logic
- * @param  {} []
- * @return {}     []
- */
-export default class extends think.logic.base {
+module.exports = class extends think.Logic {
   /**
    * index action logic
    * @return {} []
@@ -18,17 +12,35 @@ export default class extends think.logic.base {
    */
   installAction() {
     this.rules = {
-      step: 'int|default:1'
+      step: {
+        int: true,
+        default: 1
+      }
     };
 
-    if(!this.isGet()) {
+    if(!this.isGet) {
       this.rules = think.extend({
-        db_account: 'requiredIf:step,1',
-        db_name: 'requiredIf:step,1',
-        title: 'requiredIf:step,2',
-        site_url: 'requiredIf:step,2:url',
-        username: 'requiredIf:step,2|minLength:4',
-        password: 'requiredIf:step,2|minLength:8'
+        db_account: {
+          requiredIf: ['step', 1]
+        },
+        db_name: {
+          requiredIf: ['step', 1]
+        },
+        title: {
+          requiredIf: ['step', 2]
+        },
+        site_url: {
+          requiredIf: ['step', 2],
+          url: true
+        },
+        username: {
+          requiredIf: ['step', 2],
+          length: {min: 4}
+        },
+        password: {
+          requiredIf: ['step', 2],
+          length: {min: 8}
+        }
       }, this.rules);
     }
   }

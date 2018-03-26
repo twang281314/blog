@@ -1,15 +1,10 @@
-'use strict';
-
-export default class extends think.controller.base {
-  /**
-   * before
-   */
+module.exports = class extends think.Controller {
   async __before() {
-
-    let http = this.http;
-    if(http.controller === 'user' && http.action === 'login') {
+    const {controller, action} = this.ctx;
+    if(controller === 'user' && action === 'login') {
       return;
     }
+
     let userInfo = await this.session('userInfo') || {};
     if(think.isEmpty(userInfo)) {
       if(this.isAjax()) {
@@ -21,10 +16,7 @@ export default class extends think.controller.base {
       this.assign('userInfo', {id: userInfo.id, name: userInfo.name, type: userInfo.type});
     }
   }
-  /**
-   * call magic method
-   * @return {} []
-   */
+
   async __call() {
     if(this.isAjax()) {
       return this.fail('ACTION_NOT_FOUND');
@@ -40,6 +32,7 @@ export default class extends think.controller.base {
     } catch(e) { options.navigation = []; }
     delete options.push_sites; //不显示推送的配置，会有安全问题
     this.assign('options', options);
-    return this.display('index/index');
+    // this.assign('JSON', JSON);
+    return this.display('admin/index_index');
   }
-}
+};

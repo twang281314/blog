@@ -1,10 +1,11 @@
-import fs from 'fs';
-import path from 'path';
-import Wxr from 'wxr';
-import Base from './base';
+const fs = require('fs');
+const path = require('path');
+const Wxr = require('wxr');
+const Base = require('./base');
 
+//eslint-disable-next-line no-control-regex
 const NOT_SAFE_IN_XML = /[^\x09\x0A\x0D\x20-\xFF\x85\xA0-\uD7FF\uE000-\uFDCF\uFDE0-\uFFFD]/gm;
-export default class extends Base {
+module.exports = class extends Base {
   constructor(...args) {
     super(...args);
     this.outputFile = path.join(think.RUNTIME_PATH, 'output_wordpress.xml');

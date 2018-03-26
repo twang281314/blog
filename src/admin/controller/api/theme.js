@@ -1,10 +1,8 @@
-'use strict';
-
-import fs from 'fs';
-import path from 'path';
-import Base from './base';
-
+const fs = require('fs');
+const path = require('path');
 const cluster = require('cluster');
+const Base = require('./base');
+
 
 const statsAsync = think.promisify(fs.stat);
 const readdirAsync = think.promisify(fs.readdir);
@@ -12,7 +10,7 @@ const readFileAsync = think.promisify(fs.readFile);
 const writeFileAsync = think.promisify(fs.writeFile);
 const THEME_DIR = path.join(think.RESOURCE_PATH, 'theme');
 
-export default class extends Base {
+module.exports = class extends Base {
   /**
    * forbidden ../ style path
    */
@@ -139,9 +137,10 @@ export default class extends Base {
       let infoFile = path.join(THEME_DIR, theme, 'package.json');
       try {
         /*let stat = */await statsAsync(infoFile);
-        result.push(think.extend({id: theme}, think.require(infoFile)));
+        const infoData = JSON.parse(await readFileAsync(infoFile));
+        result.push(think.extend({id: theme}, infoData));
       } catch(e) {
-        console.log(e);  // eslint-disable-line no-console
+        console.log(e); // eslint-disable-line no-console
       }
     }
     return this.success(result);

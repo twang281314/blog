@@ -1,7 +1,7 @@
-import path from 'path';
-import Base from './base';
+const path = require('path');
+const Base = require('./base');
 
-export default class extends Base {
+module.exports = class extends Base {
   constructor(...args) {
     super(...args);
     this.outputFile = path.join(think.RUNTIME_PATH, 'export_hexo.zip');

@@ -1,7 +1,7 @@
-import qiniu from 'qiniu';
-import Base from './base';
+const qiniu = require('qiniu');
+const Base = require('./base');
 
-export default class extends Base {
+module.exports = class extends Base {
   // 导入方法
   async uploadMethod(filename, config) {
     qiniu.conf.ACCESS_KEY = config.accessKey;

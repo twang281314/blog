@@ -1,7 +1,7 @@
-import fs from 'fs';
-import JSZip from 'jszip';
+const fs = require('fs');
+const JSZip = require('jszip');
 
-export default class extends think.service.base {
+module.exports = class extends think.Service {
   async getPosts() {
     return this.model('post').select();
   }

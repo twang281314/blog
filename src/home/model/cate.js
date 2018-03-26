@@ -1,15 +1,12 @@
-'use strict';
-/**
- * model
- */
-export default class extends think.model.relation {
-
-  relation = {
-    post_cate: {
-      type: think.model.HAS_MANY,
-      field: 'cate_id'
-    }
-  };
+module.exports = class extends think.Model {
+  get relation() {
+      return {
+      post_cate: {
+        type: think.Model.HAS_MANY,
+        field: 'cate_id'
+      }
+    };
+  }
 
   async getCateArchive() {
     let data = await this.model('post_cate')

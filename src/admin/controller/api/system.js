@@ -1,12 +1,12 @@
-import fs from 'fs';
-import path from 'path';
-import {exec} from 'child_process';
-import semver from 'semver';
-import request from 'request';
-import pack from '../../../../package.json';
-import base from './base';
-
-const cluster = require('cluster');
+const fs = require('fs');
+const path = require('path');
+const {
+  exec
+} = require('child_process');
+const semver = require('semver');
+const request = require('request');
+const pack = require('../../../../package.json');
+const Base = require('./base');
 
 request.defaults({
   timeout: 1000,
@@ -16,24 +16,23 @@ request.defaults({
 
 const reqIns = think.promisify(request.get);
 
-export default class extends base {
+module.exports = class extends Base {
 
-  init(http) {
-    super.init(http);
-
+  constructor(...args) {
+    super(...args);
     this.modelInstance = this.model('options');
   }
 
   async getAction() {
     let needUpdate = false;
     try {
-      let res = await reqIns('http://firekylin.org/release/.latest');
+      let res = await reqIns('http://firekylin.org/release/v1/.latest');
       let onlineVersion = res.body.trim();
-      if(semver.gt(onlineVersion, pack.version)) {
+      if (semver.gt(onlineVersion, pack.version)) {
         needUpdate = onlineVersion;
       }
-    } catch(e) {
-      console.log(e);  // eslint-disable-line no-console
+    } catch (e) {
+      console.log(e); // eslint-disable-line no-console
     }
 
     let mysql = await this.modelInstance.query('SELECT VERSION() as version');
@@ -48,7 +47,9 @@ export default class extends base {
     };
 
     //非管理员只统计当前用户文章
-    let where = this.userInfo.type !== 1 ? {user_id: this.userInfo.id} : {};
+    let where = this.userInfo.type !== 1 ? {
+      user_id: this.userInfo.id
+    } : {};
     const config = await this.getConfig();
     delete config.password_salt;
 
@@ -64,52 +65,72 @@ export default class extends base {
   }
 
   async updateAction() {
-    if(/^win/.test(process.platform)) {
+    if (/^win/.test(process.platform)) {
       return this.fail('PLATFORM_NOT_SUPPORT');
     }
 
-    let {step} = this.get();
-    switch(step) {
+    let {
+      step
+    } = this.get();
+    switch (step) {
       /** 下载文件 */
       case '1':
       default:
-        return request({uri: 'http://firekylin.org/release/latest.tar.gz'})
-          .pipe(fs.createWriteStream(path.join(think.RESOURCE_PATH, 'latest.tar.gz')))
-          .on('close', () => this.success())
-          .on('error', err => this.fail(err));
+        return new Promise((resolve, reject) => {
+          request({
+              uri: 'http://firekylin.org/release/v1/latest.tar.gz'
+            })
+            .pipe(fs.createWriteStream(path.join(think.RESOURCE_PATH, 'latest.tar.gz')))
+            .on('close', resolve)
+            .on('error', reject)
+        }).then(
+          () => this.success(),
+          ({
+            message
+          }) => this.fail(message)
+        );
 
-      /** 解压覆盖，删除更新文件 */
+        /** 解压覆盖，删除更新文件 */
       case '2':
-        return exec(`
+        return new Promise((resolve, reject) => {
+          exec(`
           cd ${think.RESOURCE_PATH};
           tar zvxf latest.tar.gz;
           cp -r firekylin/* ../;
           rm -rf firekylin latest.tar.gz`, error => {
-          if(error) {
-            this.fail(error);
-          }
+            if (error) {
+              reject(error);
+            }
+            resolve();
+          });
+        }).then(
+          () => this.success(),
+          ({
+            message
+          }) => this.fail(message)
+        );
 
-          this.success();
-        });
-
-      /** 安装依赖 */
+        /** 安装依赖 */
       case '3':
-        let registry = think.config('registry') || 'https://registry.npm.taobao.org';
-        return exec(`npm install --registry=${registry}`, error => {
-          if(error) {
-            this.fail(error);
-          }
+        const registry = think.config('registry') || 'https://registry.npm.taobao.org';
+        return new Promise((resolve, reject) => {
+          exec(`npm install --registry=${registry}`, error => {
+            if (error) {
+              reject(error);
+            }
+            resolve();
+          });
+        }).then(
+          () => this.success(),
+          ({
+            message
+          }) => this.fail(message)
+        );
 
-          this.success();
-        });
-
-      /** 重启服务 */
+        /** 重启服务 */
       case '4':
-        if(cluster.isWorker) {
-          this.success();
-          setTimeout(() => cluster.worker.kill(), 200);
-        }
-
+        process.send('think-cluster-reload-workers');
+        this.success();
         break;
     }
   }

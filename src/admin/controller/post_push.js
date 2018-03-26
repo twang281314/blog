@@ -1,8 +1,11 @@
-import {PasswordHash} from 'phpass';
-import Post from './api/post';
+const {PasswordHash} = require('phpass');
+const Post = require('./api/post');
 
-export default class extends Post {
-  postModelInstance = this.model('post');
+module.exports = class extends Post {
+  constructor(...args) {
+    super(...args);
+    this.postModelInstance = this.model('post');
+  }
 
   async __before() {
 

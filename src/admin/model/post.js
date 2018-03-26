@@ -1,32 +1,20 @@
-'use strict';
+const marked = require('marked');
+const toc = require('markdown-toc');
+const highlight = require('highlight.js');
+const Base = require('./base');
 
-import marked from 'marked';
-import toc from 'markdown-toc';
-import highlight from 'highlight.js';
-import Base from './base';
-
-/**
- * relation model
- */
-export default class extends Base {
-  /**
-   * init
-   * @param  {} args []
-   * @return {}         []
-   */
-  init(...args) {
-    super.init(...args);
-
-    this.relation = {
-      tag: think.model.MANY_TO_MANY,
-      cate: think.model.MANY_TO_MANY,
+module.exports = class extends Base {
+  get relation() {
+    return {
+      tag: think.Model.MANY_TO_MANY,
+      cate: think.Model.MANY_TO_MANY,
       user: {
-        type: think.model.BELONG_TO,
+        type: think.Model.BELONG_TO,
         // fKey: 'user_id',
         // key: 'display_name',
         field: 'id,name,display_name'
       }
-    }
+    };
   }
 
   /**
@@ -110,7 +98,7 @@ export default class extends Base {
   }
 
   clearCache() {
-    think.log('clear cache');
+    think.logger.debug('clear cache');
     return think.cache('post_1', null);
   }
 
@@ -153,7 +141,7 @@ export default class extends Base {
     if(!postTocManual) {
       showToc = data.type/1 === 0;
     } else {
-      showToc = /(?:^|[\r\n]+)\s*\<\!--toc--\>\s*[\r\n]+/i.test(data.markdown_content);
+      showToc = /(?:^|[\r\n]+)\s*<!--toc-->\s*[\r\n]+/i.test(data.markdown_content);
     }
     data.content = await this.markdownToHtml(data.markdown_content, {toc: showToc, highlight: true});
     data.summary = await this.getSummary(data.markdown_content, auto_summary)
@@ -178,7 +166,7 @@ export default class extends Base {
       summary_length = parseInt(options.auto_summary);
     }
 
-    const hasMoreTag = /(?:^|[\r\n]+)\s*\<\!--more--\>\s*[\r\n]+/i.test(markdown_content);
+    const hasMoreTag = /(?:^|[\r\n]+)\s*<!--more-->\s*[\r\n]+/i.test(markdown_content);
 
     if (hasMoreTag || summary_length === 0) {
       summary = markdown_content.split('<!--more-->')[0];
@@ -208,13 +196,13 @@ export default class extends Base {
 
     // 使用包含 MathJax 解析的 Markdown 引擎解析 MD 文本
     let markedWithMathJax = think.service('marked-with-mathjax');
-    let markedContent = await markedWithMathJax(content);
+    let markedContent = await markedWithMathJax.render(content);
 
     /**
      * 增加 TOC 目录
      */
     if(option.toc) {
-      let tocContent = marked(toc(content).content).replace(/<a\s+href="#([^\"]+)">([^<>]+)<\/a>/g, (a, b, c) => {
+      let tocContent = marked(toc(content).content).replace(/<a\s+href="#([^"]+)">([^<>]+)<\/a>/g, (a, b, c) => {
         return `<a href="#${this.generateTocName(c)}">${c}</a>`;
       });
 
@@ -232,8 +220,8 @@ export default class extends Base {
         text = text.replace(/&#39;/g, '\'')
           .replace(/&gt;/g, '>')
           .replace(/&lt;/g, '<')
-          .replace(/\&quot;/g, '"')
-          .replace(/\&amp;/g, '&');
+          .replace(/&quot;/g, '"')
+          .replace(/&amp;/g, '&');
         var result = highlight.highlightAuto(text, language ? [language] : undefined);
         return `<pre><code class="hljs lang-${result.language}">${result.value}</code></pre>`;
       });
@@ -269,9 +257,9 @@ export default class extends Base {
     name = name.trim()
       .replace(/\s+/g, '')
       .replace(/\)/g, '')
-      .replace(/[\(\,]/g, '-')
+      .replace(/[(,]/g, '-')
       .toLowerCase();
-    if(/^[\w\-]+$/.test(name)) {
+    if(/^[\w-]+$/.test(name)) {
       return name;
     }
     return `toc-${think.md5(name).slice(0, 3)}`;

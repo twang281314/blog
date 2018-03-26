@@ -1,35 +1,21 @@
-import {parse} from 'url';
-/**
- * base rest controller
- */
-export default class extends think.controller.rest {
-  /**
-   * allow list for user
-   * @type {Array}
-   */
-  allowList = ['api/post/put', 'api/post/post', 'api/post/delete', 'api/file/post', 'api/file/get'];
-  /**
-   * [constructor description]
-   * @param  {[type]} http [description]
-   * @return {[type]}      [description]
-   */
-  constructor(http) {
-    super(http);
-    this._method = 'method';
+const {parse} = require('url');
+const BaseRest = require('../rest');
+
+module.exports = class extends BaseRest {
+  constructor(...args) {
+    super(...args);
+    this.allowList = ['api/post/put', 'api/post/post', 'api/post/delete', 'api/file/post', 'api/file/get'];
   }
-  /**
-   * before
-   * @return {} []
-   */
+
   async __before() {
     let userInfo = await this.session('userInfo') || {};
     if(think.isEmpty(userInfo)) {
       return this.fail('USER_NOT_LOGIN');
     }
 
-    let action = this.http.action;
+    let action = this.ctx.action;
     if(action !== 'get') {
-      let referrer = this.http.referrer();
+      let referrer = this.ctx.referrer();
       let {site_url} = await this.model('options').getOptions()
 
       if(!referrer || !site_url) {
@@ -60,7 +46,7 @@ export default class extends think.controller.rest {
       if(action === 'get') {
         return;
       }
-      let name = this.http.controller + '/' + this.http.action;
+      let name = this.ctx.controller + '/' + this.ctx.action;
       if(this.allowList.indexOf(name) > -1) {
         return;
       }

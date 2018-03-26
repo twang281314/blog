@@ -1,17 +1,17 @@
-import fs from 'fs';
-import xml2js from 'xml2js';
-import Base from './base';
+const fs = require('fs');
+const xml2js = require('xml2js');
+const Base = require('./base');
 
 const WP_POST_STATUS = {
   publish: 3, //发布
-  future: 3,  //未来发布
+  future: 3, //未来发布
   draft: 0, //草稿
   pending: 1, //待审核
   private: 3, //私密文章对应 is_public 字段为 false, 发布状态为已发布
   trash: 2, //删除文章没有对应关系遂转为已拒绝文章
 };
 
-export default class extends Base {
+module.exports = class extends Base {
 
   formatArray(obj) {
     for(var i in obj) {
@@ -120,7 +120,7 @@ export default class extends Base {
         post.markdown_content = this.toMarkdown(post.content);
         await this.postModelInstance.addPost(post);
       } catch(e) {
-        console.log(e);  // eslint-disable-line no-console
+        console.log(e); // eslint-disable-line no-console
       }
     });
     await Promise.all(postsPromise);

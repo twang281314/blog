@@ -1,7 +1,7 @@
-import path from 'path';
-import moment from 'moment';
+const path = require('path');
+const moment = require('moment');
 
-export default class extends think.service.base {
+module.exports = class extends think.Service {
   init(...args) {
     super.init(...args);
   }

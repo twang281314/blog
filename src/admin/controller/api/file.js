@@ -1,10 +1,9 @@
-import os from 'os';
-import fs from 'fs';
-import path from 'path';
-import {parse} from 'url';
-import request from 'request';
-
-import Base from './base';
+const os = require('os');
+const fs = require('fs');
+const path = require('path');
+const {parse} = require('url');
+const request = require('request');
+const Base = require('./base');
 
 const INTERNAL_AREAS = [
   ['10.0.0.0', '10.255.255.255'],
@@ -19,7 +18,6 @@ function ip2long(ip) {
   ip.split('.').forEach((part, i) => longValue += part * multi[i]);
   return longValue;
 }
-
 
 request.defaults({
   strictSSL: false,
@@ -39,8 +37,11 @@ const ALLOW_EXTS = [
   /\.(zip|rar|pdf|gz)/i
 ];
 
-export default class extends Base {
-  uploadConfig = {};
+module.exports = class extends Base {
+  constructor(...args) {
+    super(...args);
+    this.uploadConfig = {};
+  }
 
   async __before() {
     await super.__before();
@@ -94,7 +95,7 @@ export default class extends Base {
 
   //MIME过滤
   extWhiteList(file) {
-    return ALLOW_EXTS.some(reg => reg.test(file.originalFilename));
+    return ALLOW_EXTS.some(reg => reg.test(file.name));
   }
 
   // 获取上传设置
@@ -109,10 +110,15 @@ export default class extends Base {
   async serviceUpload(service, file, config) {
     try {
       const uploader = think.service(`upload/${service}`, 'admin');
-      const result = await (new uploader()).run(file, config);
+      const result = await uploader.run(file, config);
       return this.success(result);
     } catch (e) {
-      return this.fail(e || 'FILE_UPLOAD_ERROR');
+      if(think.isPrevent(e)) {
+        return true;
+      }
+
+      console.log(e); //eslint-disable-line no-console
+      return this.fail(e.message || 'FILE_UPLOAD_ERROR');
     }
   }
 
@@ -170,11 +176,11 @@ export default class extends Base {
       throw new Error('UPLOAD_TYPE_ERROR');
     }
 
-    let uploadDir = this.config('post').file_upload_path;
-    if(!uploadDir) {
-      uploadDir = path.join(os.tmpdir(), 'thinkjs/upload');
-    }
-    if(!think.isDir(uploadDir)) {
+    // let uploadDir = this.config('post').file_upload_path;
+    // if(!uploadDir) {
+    const uploadDir = path.join(os.tmpdir(), 'thinkjs/upload');
+    // }
+    if(!think.isDirectory(uploadDir)) {
       think.mkdir(uploadDir);
     }
 
@@ -183,10 +189,10 @@ export default class extends Base {
     await writeFileAsync(uploadPath, resp.body, 'binary');
 
     return {
-      fieldName: 'file',
-      originalFilename: path.basename(url),
+      name: path.basename(url),
       path: uploadPath,
-      size: resp.headers['content-length']
+      size: resp.headers['content-length'],
+      type: resp.headers['content-type']
     };
   }
 }

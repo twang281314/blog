@@ -1,13 +1,10 @@
-'use strict';
-
-import fs from 'fs';
-import path from 'path';
-import Base from './base';
+const fs = require('fs');
+const path = require('path');
+const Base = require('./base');
 
 const stats = think.promisify(fs.stat);
 
-
-export default class extends Base {
+module.exports = class extends Base {
   /**
    * index action
    * @return {[type]} [description]
@@ -45,7 +42,7 @@ export default class extends Base {
       if (!think.isEmpty(tagName)) {
         tagName = tagName.name;
       } else {
-        return think.statusAction(404, this.http);
+        return this.ctx.throw(404);
       }
     }
     if (where.cate) {
@@ -55,7 +52,7 @@ export default class extends Base {
       if (cateName && cateName.name) {
         cateName = cateName.name;
       } else {
-        return think.statusAction(404, this.http);
+        return this.ctx.throw(404);
       }
     }
 
@@ -64,9 +61,8 @@ export default class extends Base {
       post.pathname = encodeURIComponent(post.pathname);
       let create_time = new Date(post.create_time);
       post.post_year = create_time.getFullYear();
-      post.post_month = Utils.numberToChinese(create_time.getMonth() + 1);
+      post.post_month = think.numberToChinese(create_time.getMonth() + 1);
       post.post_day = create_time.getDate();
-
       try {
         post.options = JSON.parse(post.options) || {};
         post.featuredImage = post.options.featuredImage;
@@ -93,7 +89,7 @@ export default class extends Base {
    * @return {[type]} [description]
    */
   async detailAction() {
-    this.http.url = decodeURIComponent(this.http.url);
+    this.ctx.url = decodeURIComponent(this.ctx.url);
     let pathname = this.get('pathname');
     if (pathname === 'list') {
       return this.listAction();
@@ -123,7 +119,7 @@ export default class extends Base {
 
     let create_time = new Date(detail.create_time);
     detail.post_year = create_time.getFullYear();
-    detail.post_month = Utils.numberToChinese(create_time.getMonth() + 1);
+    detail.post_month = think.numberToChinese(create_time.getMonth() + 1);
     detail.post_day = create_time.getDate();
     this.assign('post', detail);
 
@@ -167,7 +163,7 @@ export default class extends Base {
         if (detail.options.template) {
           /*let stat = */
           await stats(path.join(this.THEME_VIEW_PATH, 'template', detail.options.template));
-          template = `template${think.sep}` + detail.options.template.slice(0, -5);
+          template = path.join('template', detail.options.template.slice(0, -5));
         }
       } catch (e) {
         console.log(e); // eslint-disable-line no-console
@@ -215,14 +211,14 @@ export default class extends Base {
   async tagAction() {
     return this.displayView('tag');
   }
-
   /**
    * search action
    * @return {[type]} [description]
    */
   async searchAction() {
-    let keyword = this.get('keyword').trim();
+    let keyword = this.get('keyword');
     if (keyword) {
+      keyword = keyword.trim();
       let postModel = this.model('post');
       let searchResult = await postModel.getPostSearch(keyword, this.get('page'));
       this.assign('searchData', searchResult);

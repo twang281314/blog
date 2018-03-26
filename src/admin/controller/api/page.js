@@ -1,13 +1,9 @@
-'use strict';
+const Post = require('./post');
 
-import Post from './post';
-
-export default class extends Post {
-
-  postModel = this.model('post');
-
-  constructor(http) {
-    super(http);
+module.exports = class extends Post {
+  constructor(...args) {
+    super(...args);
+    this.postModel = this.model('post');
     this._modelInstance = this.modelInstance;
     Object.defineProperty(this, 'modelInstance', {
       get() {

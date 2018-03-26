@@ -1,19 +1,19 @@
-import fs from 'fs';
-import url from 'url';
-import path from 'path';
-import Base from './base';
+const fs = require('fs');
+const url = require('url');
+const path = require('path');
+const Base = require('./base');
 
 const renameAsync = think.promisify(fs.rename, fs);
-export default class extends Base {
+module.exports = class extends Base {
   async uploadMethod(file, {name}) {
     let ext = /^\.\w+$/.test(path.extname(file)) ? path.extname(file) : '.png';
     let basename = (name || path.basename(file, ext)) + ext;
     //过滤 ../../
-    basename = basename.replace(/[\\\/]/g, '');
+    basename = basename.replace(/[\\/]/g, '');
 
     let destDir = this.formatNow();
     let destPath = path.join(think.UPLOAD_PATH, destDir);
-    if(!think.isDir(destPath)) {
+    if(!think.isDirectory(destPath)) {
       think.mkdir(destPath);
     }
 

@@ -7,7 +7,7 @@
 
   <div>
     <a href="https://github.com/firekylin/firekylin">
-      <img src="https://img.shields.io/badge/node-%3E%3D4.0-red.svg?style=flat-square" alt="node version required" />
+      <img src="https://img.shields.io/badge/node-%3E%3D8.9.4-red.svg?style=flat-square" alt="node version required" />
     </a>
     <a href="https://github.com/firekylin/firekylin/releases">
       <img src="https://img.shields.io/github/release/firekylin/firekylin.svg?style=flat-square" alt="GitHub release" />
@@ -28,7 +28,7 @@
     </a>
   </div>
 
-  <p>A Simple & Fast Node Blogging Platform Base On ThinkJS 2.0 & ReactJS & ES2015+.</p>
+  <p>A Simple & Fast Node Blogging Platform Base On ThinkJS 3 & ReactJS & ES2015+.</p>
 </div>
 
 

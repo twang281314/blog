@@ -1,10 +1,4 @@
-'use strict';
-/**
- * logic
- * @param  {} []
- * @return {}     []
- */
-export default class extends think.logic.base {
+module.exports = class extends think.Logic {
   /**
    * index action logic
    * @return {} []
@@ -28,17 +22,17 @@ export default class extends think.logic.base {
    */
   loginAction() {
     this.allowMethods = 'get,post';
-    if(this.isGet()) {
+    if(this.isGet) {
       return;
     }
     this.rules = {
       username: {
         required: true,
-        minLength: 4
+        length: {min: 4}
       },
       password: {
         required: true,
-        length: [32, 32]
+        length: {min: 32, max: 32}
       },
       factor: {
         regexp: /^\d{6}$/

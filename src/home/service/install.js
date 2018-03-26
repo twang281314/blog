@@ -1,9 +1,8 @@
-'use strict';
+const fs = require('fs');
+const path = require('path');
+const semver = require('semver');
 
-import fs from 'fs';
-import path from 'path';
-import semver from 'semver';
-
+const tables = ['cate', 'post', 'post_cate', 'post_tag', 'tag', 'user'];
 const startPost = `
 这是程序自动发布的文章。如果您看到这篇文章，表示您的 Blog 已经安装成功！
 
@@ -41,14 +40,16 @@ Markdown 的格式说明可参考：[英文版](https://guides.github.com/featur
 好了，介绍就这么多，快开始你的 Blog 之旅吧！
 `;
 
-class InstallService extends think.service.base {
+module.exports = class extends think.Service {
   constructor(ip) {
     super(ip);
     this.ip = ip;
 
-    let dbConfig = think.config('db');
-    if(think.isObject(dbConfig.adapter) && think.isObject(dbConfig.adapter[dbConfig.type])) {
-      this.dbConfig = dbConfig.adapter[dbConfig.type];
+    let dbConfig = think.config('model');
+    this.type = dbConfig.type || 'mysql';
+
+    if(think.isObject(dbConfig[this.type])) {
+      this.dbConfig = dbConfig[this.type];
     }
   }
 
@@ -62,9 +63,8 @@ class InstallService extends think.service.base {
       dbConfig = this.dbConfig;
     }
     return this.model(name || 'user', {
-      adapter: {
-        mysql: dbConfig
-      }
+      type: this.type,
+      [this.type]: dbConfig
     }, module)
   }
 
@@ -101,7 +101,7 @@ class InstallService extends think.service.base {
       await model.query('CREATE DATABASE `' + this.dbConfig.database + '`').catch(() => {});
     }
 
-    let dbFile = think.ROOT_PATH + think.sep + 'firekylin.sql';
+    let dbFile = path.join(think.ROOT_PATH, 'firekylin.sql');
     if(!think.isFile(dbFile)) {
       return Promise.reject('数据库文件（firekylin.sql）不存在，请重新下载');
     }
@@ -127,12 +127,12 @@ class InstallService extends think.service.base {
       for(let item of content) {
         item = item.trim();
         if(item) {
-          think.log(item);
+          think.logger.debug(item);
           await model.query(item);
         }
       }
     }catch(e) {
-      think.log(e);
+      think.logger.error(e);
       return Promise.reject('数据表导入失败，请在控制台下查看具体的错误信息，并在 GitHub 上发 issue。');
     }
 
@@ -158,27 +158,26 @@ class InstallService extends think.service.base {
 
   updateConfig() {
     let data = {
-      type: 'mysql',
+      type: this.type,
       adapter: {
-        mysql: this.dbConfig
+        [this.type]: this.dbConfig
       }
-    }
-    let content = `
-      "use strict";
-      exports.__esModule = true;
-      exports.default = ${JSON.stringify(data, undefined, 4)}
+    };
+    let content = `"use strict";
+exports.__esModule = true;
+exports.default = ${JSON.stringify(data, undefined, 4)}
     `;
 
-    let dbConfigFile;
-    try {
-      let srcPath = path.join(think.ROOT_PATH, 'src/common/config');
-      fs.statSync(srcPath);
-      dbConfigFile = path.join(srcPath, 'db.js');
-    } catch(e) {
-      dbConfigFile = path.join(think.APP_PATH, '/common/config/db.js');
-    }
+    const dbConfigFile = path.join(think.ROOT_PATH, 'src/common/config/db.js');
     fs.writeFileSync(dbConfigFile, content);
-    think.config('db', data);
+
+    for(const i in this.dbConfig) {
+      think.config(`model.${this.type}.${i}`, this.dbConfig[i], 'common');
+    }
+    // think.config('model', {
+    //   type: this.type,
+    //   [this.type]: this.dbConfig
+    // });
   }
 
   async createAccount(username, password) {
@@ -220,7 +219,6 @@ class InstallService extends think.service.base {
 
   async saveDbInfo(dbConfig) {
     this.dbConfig = dbConfig;
-    this.dbConfig.type = 'mysql';
     await this.checkDbInfo();
     this.updateConfig();
   }
@@ -236,37 +234,34 @@ class InstallService extends think.service.base {
     await optionsModel.getOptions(true);
     //optionsModel.close();
   }
-}
 
-const tables = ['cate', 'post', 'post_cate', 'post_tag', 'tag', 'user'];
-InstallService.checkInstalled = async function() {
-  let dbConfig = think.config('db');
-  let database = dbConfig.database;
-  let prefix = dbConfig.prefix;
-  if(!database && think.isObject(dbConfig.adapter) && think.isObject(dbConfig.adapter[dbConfig.type])) {
-    database = dbConfig.adapter[dbConfig.type].database;
-    prefix = dbConfig.adapter[dbConfig.type].prefix;
-  }
+  async checkInstalled() {
+    let dbConfig = think.config('model');
+    let database = dbConfig.database;
+    let prefix = dbConfig.prefix;
+    if(!database && think.isObject(dbConfig[dbConfig.type])) {
+      database = dbConfig[dbConfig.type].database;
+      prefix = dbConfig[dbConfig.type].prefix;
+    }
 
-  try {
-    let existTables = await think.model('user', dbConfig).query(
-      'SELECT `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA`=\'' +
-      database + '\''
-    );
-    if(think.isEmpty(existTables)) {
+    try {
+      let existTables = await think.model('user', dbConfig).query(
+        'SELECT `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA`=\'' +
+        database + '\''
+      );
+      if(think.isEmpty(existTables)) {
+        return false;
+      }
+
+      existTables = existTables.map(table => table.TABLE_NAME);
+      let installed = tables.every(table => existTables.indexOf(prefix+table) > -1);
+      if(installed) {
+        firekylin.setInstalled();
+      }
+      return installed;
+    } catch(e) {
+      think.logger.error(e);
       return false;
     }
-
-    existTables = existTables.map(table => table.TABLE_NAME);
-    let installed = tables.every(table => existTables.indexOf(prefix+table) > -1);
-    if(installed) {
-      firekylin.setInstalled();
-    }
-    return installed;
-  } catch(e) {
-    think.log(e);
-    return false;
   }
 };
-
-export default InstallService;

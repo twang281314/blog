@@ -1,8 +1,8 @@
-import https from 'https';
-import FormData from 'form-data';
-import Base from './base';
+const https = require('https');
+const FormData = require('form-data');
+const Base = require('./base');
 
-export default class extends Base {
+module.exports = class extends Base {
   // 导入方法
   async uploadMethod(filename, config) {
     var form = new FormData();

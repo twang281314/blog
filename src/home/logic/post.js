@@ -1,10 +1,4 @@
-'use strict';
-/**
- * logic
- * @param  {} []
- * @return {}     []
- */
-export default class extends think.logic.base {
+module.exports = class extends think.Logic {
   /**
    * index action logic
    * @return {} []
@@ -28,17 +22,22 @@ export default class extends think.logic.base {
   }
 
   previewCheck() {
-    if(!this.isPost()) {
+    if(!this.isPost) {
       return true;
     }
 
     let rules = {
-      preview: 'boolean|get',
-      previewData: 'requiredIf:preview,true'
+      preview: {
+        method: 'GET',
+        boolean: true
+      },
+      previewData: {
+        requiredIf: ['preview', true]
+      }
     };
 
     if(!this.validate(rules)) {
-      think.statusAction(400, this.http);
+      this.ctx.throw(400);
     }
   }
 }

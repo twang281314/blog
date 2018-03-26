@@ -1,10 +1,8 @@
-'use strict';
+const speakeasy = require('speakeasy');
+const push2Firekylin = require('push-to-firekylin');
+const Base = require('./base');
 
-import speakeasy from 'speakeasy';
-import push2Firekylin from 'push-to-firekylin';
-import Base from './base';
-
-export default class extends Base {
+module.exports = class extends Base {
   /**
    * 获取
    * @return {[type]} [description]

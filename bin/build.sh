@@ -32,15 +32,15 @@ cp -r www/theme/firekylin output/www/theme;
 # rm -rf www/theme/firekylin.build/;
 
 
-npm run compile;
+# npm run compile;
 npm run copy-package;
 
-cp -r app output;
-rm -rf output/app/common/runtime;
+cp -r src output;
+rm -rf output/src/common/runtime;
 
 cp -r nginx.conf output/nginx_default.conf;
 cp -r pm2.json output/pm2_default.json;
-cp -r www/*.js output/www;
+cp -r production.js output/production.js;
 
 
 cp -r firekylin.sql output/;
@@ -54,8 +54,8 @@ cp -r bin/ssl/auto_build.sh output/;
 cp -r bin/ssl/https.js output/;
 cp -r bin/ssl/https.sh output/;
 
-if [ -f output/app/common/config/db.js ]; then
-  rm -r output/app/common/config/db.js;
+if [ -f output/src/common/config/db.js ]; then
+  rm -r output/src/common/config/db.js;
 fi
 rm -rf output/www/static/js/*.map;
 mv output firekylin;
@@ -70,7 +70,7 @@ tar zxvfm $TARNAME;
 
 
 HOST="root@firekylin.org";
-REMOTE_TAR="/var/www/firekylin.org/www/release";
+REMOTE_TAR="/var/www/firekylin.org/www/release/v1";
 scp $TARNAME $HOST:$REMOTE_TAR;
 ssh $HOST cp $REMOTE_TAR/$TARNAME $REMOTE_TAR/latest.tar.gz;
 ssh $HOST "echo $VERSION > $REMOTE_TAR/.latest";

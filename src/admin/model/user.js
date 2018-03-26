@@ -1,11 +1,7 @@
-'use strict';
+const {PasswordHash} = require('phpass');
+const Base = require('./base');
 
-import {PasswordHash} from 'phpass';
-import Base from './base';
-/**
- * model
- */
-export default class extends Base {
+module.exports = class extends Base {
 
   /**
    * get password
@@ -101,7 +97,7 @@ export default class extends Base {
     if(think.isEmpty(updateData)) {
       return Promise.reject('DATA_EMPTY');
     }
-    if(!info.email && data.email) {
+    if(data.email) {
       let count = await this.where({email: data.email}).count('email');
       if(!count) {
         updateData.email = data.email;

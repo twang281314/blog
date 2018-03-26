@@ -1,4 +1,3 @@
-// http://eslint.org/docs/rules
 {
   "parser": "babel-eslint",
   "env": {
@@ -8,9 +7,11 @@
   },
   "globals": {
     "think": false,
-    "firekylin": false
+    "firekylin": false,
+    "Gitalk": false
   },
   "extends": [
+    "think",
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:import/errors",
@@ -30,7 +31,7 @@
   "settings": {
     "import/resolver": {
       "webpack": {
-        "config": "webpack.config.babel.js"
+        "config": "webpack.config.js"
       }
     }
   },

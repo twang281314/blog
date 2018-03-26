@@ -1,36 +1,35 @@
-'use strict';
-/**
- * model
- */
-export default class extends think.model.relation {
-  /**
-   * relation
-   * @type {Object}
-   */
-  relation = {
-    cate: {
-      type: think.model.MANY_TO_MANY,
-      field: 'id,name,pathname'
-    },
-    tag: {
-      type: think.model.MANY_TO_MANY,
-      field: 'id,name,pathname'
-    },
-    user: {
-      type: think.model.BELONG_TO,
-      field: 'id,name,display_name,email'
-    }
-  };
+module.exports = class extends think.Model {
+  get relation() {
+    return {
+      cate: {
+        type: think.Model.MANY_TO_MANY,
+        field: 'id,name,pathname'
+      },
+      tag: {
+        type: think.Model.MANY_TO_MANY,
+        field: 'id,name,pathname'
+      },
+      user: {
+        type: think.Model.BELONG_TO,
+        field: 'id,name,display_name,email'
+      }
+    };
+  }
 
-  async init(...args) {
-    super.init(...args);
-    let {
-      feedFullText,
+  async getFeedFullText() {
+    const {
+      feedFullText
+    } = await this.model('options').getOptions();
+    return feedFullText;
+  }
+
+  async getPostsListSize() {
+    const {
       postsListSize
     } = await this.model('options').getOptions();
-    this.feedFullText = feedFullText;
-    this.postsListSize = +postsListSize;
+    return +postsListSize;
   }
+
   /**
    * get where condition
    * @param  {[type]} where [description]
@@ -56,7 +55,7 @@ export default class extends think.model.relation {
    * @return {Promise}
    */
   getLastPostList() {
-    return think.cache('lastPostList', async() => {
+    return think.cache('lastPostList', async () => {
       let postList = await this.getPostList();
       return postList.data;
     });
@@ -70,6 +69,7 @@ export default class extends think.model.relation {
    */
   async getPostList(page, options = {}) {
     page = page | 0 || 1;
+    const postsListSize = await this.getPostsListSize();
 
     let field = options.field || 'id,title,pathname,create_time,summary,comment_num,options,content';
     if ((await this.model('user').count()) > 0) {
@@ -101,17 +101,17 @@ export default class extends think.model.relation {
         })
         .where(where)
         .order('create_time DESC')
-        .page(page, this.postsListSize)
+        .page(page, postsListSize)
         .countSelect();
     }
 
     //search by year and month
     if (options.year) {
-      let where='';
-      where = 'YEAR(create_time)=' + Number(options.year)
-       + ' and MONTH(create_time)='
-       + Number(options.month)
-       + ' and is_public=1 and status=3 ';
+      let where = '';
+      where = 'YEAR(create_time)=' + Number(options.year) +
+        ' and MONTH(create_time)=' +
+        Number(options.month) +
+        ' and is_public=1 and status=3 ';
       return this.field(field)
         .page(page, this.postsListSize)
         .setRelation('user')
@@ -125,7 +125,7 @@ export default class extends think.model.relation {
     // if(page === 1){
     //   return think.cache('post_1', () => {
     //     return this.field(field)
-    //       .page(page, this.postsListSize)
+    //       .page(page, postsListSize)
     //       .setRelation(false)
     //       .order('create_time DESC')
     //       .where(where)
@@ -134,7 +134,8 @@ export default class extends think.model.relation {
     // }
 
     return this.field(field)
-      .page(page, this.postsListSize)
+      .page(page, postsListSize)
+      .setRelation('user')
       .order('create_time DESC')
       .where(where)
       .countSelect();
@@ -180,8 +181,9 @@ export default class extends think.model.relation {
   async getPostRssList() {
     let field = 'id,title,pathname,create_time,';
     let where = this.getWhereCondition();
+    const feedFullText = await this.getFeedFullText();
 
-    if (this.feedFullText === '0') {
+    if (feedFullText === '0') {
       field += 'summary,content';
     } else {
       field += 'content';
@@ -226,7 +228,7 @@ export default class extends think.model.relation {
       .select();
     let result = {};
     data.forEach(item => {
-      let yearMonth = think.datetime(item.create_time, 'YYYY年');
+      let yearMonth = think.datetime(item.create_time, 'YYYY年MM月');
       if (!(yearMonth in result)) {
         result[yearMonth] = [];
       }
@@ -246,7 +248,7 @@ export default class extends think.model.relation {
     }
     where = this.getWhereCondition(where);
     return this.where(where)
-      .page(page, this.postsListSize)
+      .page(page, await this.getPostsListSize())
       .setRelation(false)
       .field('title,pathname,summary,create_time')
       .order('create_time DESC')

@@ -1,15 +1,13 @@
-'use strict';
-/**
- * model
- */
-export default class extends think.model.relation {
+module.exports = class extends think.Model {
 
-  relation = {
-    post_tag: {
-      type: think.model.HAS_MANY,
-      field: 'tag_id'
-    }
-  };
+  get relation() {
+    return {
+      post_tag: {
+        type: think.Model.HAS_MANY,
+        field: 'tag_id'
+      }
+    };
+  }
 
   /**
    * get hot tags
@@ -44,8 +42,8 @@ export default class extends think.model.relation {
       .select();
 
     let result = {};
-    for(let tag of data) {
-      if(result[tag.pathname]) {
+    for (let tag of data) {
+      if (result[tag.pathname]) {
         result[tag.pathname].count += 1;
       } else {
         result[tag.pathname] = {
@@ -57,6 +55,6 @@ export default class extends think.model.relation {
       }
     }
 
-    return Object.values(result).sort((a, b)=> a.count>b.count ? -1 : 1);
+    return Object.values(result).sort((a, b) => a.count > b.count ? -1 : 1);
   }
 }

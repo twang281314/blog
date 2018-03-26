@@ -2,8 +2,9 @@ var fs = require('fs');
 var content = fs.readFileSync('./package.json', 'utf8');
 var data = JSON.parse(content);
 delete data.devDependencies;
+delete data.thinkjs;
 data.scripts = {
-  start: 'node www/production.js'
+  start: 'node production.js'
 };
 fs.writeFileSync('output/package.json', JSON.stringify(data, undefined, 4));
 fs.writeFileSync('.version', data.version);

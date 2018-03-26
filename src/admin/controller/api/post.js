@@ -1,13 +1,10 @@
-'use strict';
+const push2Firekylin = require('push-to-firekylin');
+const moment = require('moment');
+const Base = require('./base');
 
-import push2Firekylin from 'push-to-firekylin';
-import moment from 'moment';
-import Base from './base';
-import request from 'request';
-
-export default class extends Base {
-  constructor(http) {
-    super(http);
+module.exports = class extends Base {
+  constructor(...args) {
+    super(...args);
     this._modelInstance = this.modelInstance;
     Object.defineProperty(this, 'modelInstance', {
       get() {
@@ -23,13 +20,12 @@ export default class extends Base {
    */
   async getAction() {
     // this.modelInstance.field('id,user_id,type,status,title,pathname,create_time,update_time');
+    if (this.get('type') === 'lastest') {
+      return this.lastest();
+    }
+
     let data;
     if (this.id) {
-      if (this.id === 'lastest') {
-        return this.lastest();
-      } else if (this.id === 'getPathName') {
-        return this.getPathName(this.get('title'));
-      }
       data = await this.modelInstance.where({
         id: this.id
       }).find();
@@ -224,7 +220,7 @@ export default class extends Base {
     let push_sites_keys = postOpt.push_sites;
 
     if (post.markdown_content.slice(0, 5) !== '> 原文：') {
-      let site_url = options.hasOwnProperty('site_url') ? options.site_url : `http://${this.http.host}`;
+      let site_url = options.hasOwnProperty('site_url') ? options.site_url : `http://${this.ctx.host}`;
       post.markdown_content = `> 原文：${site_url}/post/${post.pathname}.html
 
 ${post.markdown_content}`;
@@ -292,7 +288,6 @@ ${post.markdown_content}`;
     await Promise.all(promises);
     return tagIds;
   }
-
   /**
    * 调用有道api自动获取文章英文超链接
    * @param {*文章标题} title 

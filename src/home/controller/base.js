@@ -1,22 +1,19 @@
-'use strict';
-import pack from '../../../package.json';
 
-export default class extends think.controller.base {
-  /**
-   * init
-   * @param  {[type]} http [description]
-   * @return {[type]}      [description]
-   */
-  init(http) {
-    super.init(http);
+const path = require('path');
+const pack = require('../../../package.json');
+
+module.exports = class extends think.Controller {
+
+  constructor(...args) {
+    super(...args);
     //home view path
-    this.HOME_VIEW_PATH = `${think.ROOT_PATH}${think.sep}view${think.sep}home${think.sep}`;
+    this.HOME_VIEW_PATH = path.join(think.ROOT_PATH, 'view', 'home');
   }
   /**
    * some base method in here
    */
   async __before() {
-    if (this.http.action === 'install') {
+    if (this.ctx.action === 'install') {
       return;
     }
     if (!firekylin.isInstalled) {
@@ -57,12 +54,12 @@ export default class extends think.controller.base {
     this.assign('VERSION', pack.version);
     //set theme view root path
     let theme = options.theme || 'firekylin';
-    this.THEME_VIEW_PATH = `${think.ROOT_PATH}${think.sep}www${think.sep}theme${think.sep}${theme}${think.sep}`;
+    this.THEME_VIEW_PATH = path.join(think.ROOT_PATH, 'www', 'theme', theme);
 
     //网站地址
     let siteUrl = this.options.site_url;
     if (!siteUrl) {
-      siteUrl = 'http://' + this.http.host;
+      siteUrl = 'http://' + this.ctx.host;
     }
     this.assign('site_url', siteUrl);
 
@@ -98,7 +95,7 @@ export default class extends think.controller.base {
    * @return {}      []
    */
   async displayView(name) {
-    if (this.http.url.match(/\.json(?:\?|$)/)) {
+    if (this.ctx.url.match(/\.json(?:\?|$)/)) {
       let jsonOutput = {},
         assignObj = this.assign();
       Object.keys(assignObj).forEach((key) => {
@@ -107,10 +104,11 @@ export default class extends think.controller.base {
         }
       })
 
-      this.type('application/json');
-      return this.end(jsonOutput);
+      this.ctx.type = 'application/json';
+      this.ctx.body = jsonOutput;
+      return true;
     }
 
-    return this.display(this.THEME_VIEW_PATH + name + '.html');
+    return this.display(path.join(this.THEME_VIEW_PATH, name + '.html'));
   }
 }

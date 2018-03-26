@@ -1,11 +1,9 @@
-import moment from 'moment';
-import toMarkdown from 'to-markdown';
+const moment = require('moment');
+const toMarkdown = require('to-markdown');
 
-export default class extends think.service.base {
-  static DEFAULT_USER_PWD = 'admin12345678';
-
-  init(...args) {
-    super.init(...args);
+class Base extends think.Service {
+  constructor(...args) {
+    super(...args);
     this.userModelInstance = this.model('user');
     this.cateModelInstance = this.model('cate');
     this.tagModelInstance = this.model('tag');
@@ -59,7 +57,7 @@ export default class extends think.service.base {
   /**
    * 处理上传文件获取导入数据
    */
-  async parseFile(file) {  // eslint-disable-line no-unused-vars
+  async parseFile(file) { // eslint-disable-line no-unused-vars
 
   }
 
@@ -73,3 +71,6 @@ export default class extends think.service.base {
     return {user, post, page, tag, category};
   }
 }
+
+Base.prototype.DEFAULT_USER_PWD = 'admin12345678';
+module.exports = Base;

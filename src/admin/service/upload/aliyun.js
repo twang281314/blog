@@ -1,9 +1,8 @@
+const co = require('co');
+const OSS = require('ali-oss');
+const Base = require('./base');
 
-import co from 'co';
-import OSS from 'ali-oss';
-import Base from './base';
-
-export default class extends Base {
+module.exports = class extends Base {
   // 导入方法
   async uploadMethod(filename, config) {
     const client = new OSS({
