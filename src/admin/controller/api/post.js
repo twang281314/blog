@@ -1,6 +1,7 @@
 const push2Firekylin = require('push-to-firekylin');
 const moment = require('moment');
 const Base = require('./base');
+const request = require('request');
 
 module.exports = class extends Base {
   constructor(...args) {
@@ -19,9 +20,12 @@ module.exports = class extends Base {
    * @return {[type]} [description]
    */
   async getAction() {
+
     // this.modelInstance.field('id,user_id,type,status,title,pathname,create_time,update_time');
     if (this.get('type') === 'lastest') {
       return this.lastest();
+    } else if (this.get('type') === 'getPathName') {
+      return this.getPathName(this.get('title'));
     }
 
     let data;
@@ -293,6 +297,7 @@ ${post.markdown_content}`;
    * @param {*文章标题} title 
    */
   async getPathName(title) {
+
     let options = await this.model('options').getOptions(); //获取系统设置信息
     let youdaoConfig = options.youdao_configuration.split(',');
     let youdaoApiUrl = 'http://openapi.youdao.com/api';
